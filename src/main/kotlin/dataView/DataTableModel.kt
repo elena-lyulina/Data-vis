@@ -10,7 +10,6 @@ import java.io.*
 import java.util.ArrayList
 
 class DataTableModel internal constructor(dataList: List<Array<String>>) : AbstractTableModel() {
-    private val myFile: VirtualFile? = null
     private val columnNames: Array<String>
     private val data: List<Array<String>>
 

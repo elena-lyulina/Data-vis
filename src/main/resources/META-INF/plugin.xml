@@ -19,7 +19,7 @@
         <toolWindow id="Data Variables" secondary="true" anchor="bottom"
                     factoryClass="ui.DataToolWindowFactory"/>
         <toolWindow id="Data vis" secondary="true" anchor="right"
-                    factoryClass="ui.DataViewWindowFactory"/>
+                    factoryClass="ui.DataViewToolWindowFactory"/>
         <projectService serviceInterface="ui.DataVariablesPanel" serviceImplementation="ui.DataVariablesPanel"/>
         <projectService serviceInterface="ui.DataViewTabbedPanel" serviceImplementation="ui.DataViewTabbedPanel"/>
 
