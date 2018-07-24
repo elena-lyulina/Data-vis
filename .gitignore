@@ -82,3 +82,7 @@ hs_err_pid*
 
 /src/main/kotlin/examples/
 /lib/
+.gradle/
+.idea/
+build/
+gradle/
