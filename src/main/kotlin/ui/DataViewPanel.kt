@@ -3,8 +3,6 @@ package ui
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.ui.JBColor
 import dataView.*
 
 import javax.swing.*
@@ -13,7 +11,7 @@ import java.util.Arrays
 
 
 // todo: open immediately when user clicks on data variable
-internal class DataViewPanel(private val myFile: VirtualFile) : JPanel(BorderLayout()) {
+internal class DataViewPanel(private val myFile: VirtualFileWrapper) : JPanel(BorderLayout()) {
     private val plotPanel: JPanel
     private val dataViewKinds: List<AbstractView>
 

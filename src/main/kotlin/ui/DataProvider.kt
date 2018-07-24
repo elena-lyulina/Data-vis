@@ -7,21 +7,21 @@ import java.util.ArrayList
 import java.util.stream.Collectors
 
 class DataProvider private constructor() {
-    private val dataVariables: MutableList<VirtualFile>
-    private var modelToNotify: DefaultListModel<VirtualFile>? = null
+    private val dataVariables: MutableList<VirtualFileWrapper>
+    private var modelToNotify: DefaultListModel<VirtualFileWrapper>? = null
 
-    val data: List<VirtualFile>
+    val data: List<VirtualFileWrapper>
         get() = dataVariables
 
     init {
-        dataVariables = ArrayList<VirtualFile>()
+        dataVariables = ArrayList<VirtualFileWrapper>()
     }
 
-    internal fun setListModel(listModel: DefaultListModel<VirtualFile>) {
+    internal fun setListModel(listModel: DefaultListModel<VirtualFileWrapper>) {
         modelToNotify = listModel
     }
 
-    private fun notifyModelAboutAdding(toAdd: VirtualFile) {
+    private fun notifyModelAboutAdding(toAdd: VirtualFileWrapper) {
         modelToNotify!!.addElement(toAdd)
     }
 
@@ -29,15 +29,16 @@ class DataProvider private constructor() {
         modelToNotify!!.removeAllElements()
     }
 
-    fun add(file: VirtualFile) {
+
+    fun add(file: VirtualFileWrapper) {
         if (isUnique(file)) {
             dataVariables.add(file)
             notifyModelAboutAdding(file)
         }
     }
 
-    private fun isUnique(file: VirtualFile): Boolean {
-        return !dataVariables.contains(file);
+    private fun isUnique(file: VirtualFileWrapper): Boolean {
+        return !dataVariables.map { dv -> dv.myFile }.contains(file.myFile)
     }
 
     internal fun removeAll() {

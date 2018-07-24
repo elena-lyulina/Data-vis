@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.vfs.VirtualFile
 import io.data2viz.timeFormat.parse
+import ui.VirtualFileWrapper
 
 import javax.swing.*
 import java.awt.*
@@ -21,18 +22,14 @@ internal interface View {
     fun show()
 }
 
-abstract class AbstractView internal constructor(internal var dataFile: VirtualFile, internal var plotPanel: JPanel) : View {
+abstract class AbstractView internal constructor(internal var dataFile: VirtualFileWrapper, internal var plotPanel: JPanel) : View {
     internal var DATA_VIEW_ID: String? = null
     private val ICON_SIZE = 50
     internal var actionIcon: ImageIcon? = null
-    internal var parsedData: ArrayList<Array<String>> = ArrayList();
 
     override val action: AnAction
         get() = Action()
 
-    init {
-        parseCSV()
-    }
 
     internal fun scaleIcon(icon: ImageIcon): ImageIcon {
         return ImageIcon(icon.image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_DEFAULT))
@@ -51,24 +48,6 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
         }
     }
 
-
-    // just first implementation todo: check Scientific mode and OpenCSV
-    // may it should be connected with virtualFile, not with view?
-    private fun parseCSV() {
-//        val reader = BufferedReader(FileReader(dataFile.path))
-//        reader.lines().map{str ->
-//          //  parsedData.add(str.split(DEFAULT_SEPARATOR.toRegex()));
-//            println(str)}
-
-        val stream = Files.newInputStream(Paths.get(dataFile.path))
-        stream.buffered().reader().use { reader ->
-            reader.readLines().map { l -> parsedData.add(l.split(DEFAULT_SEPARATOR.toRegex()).toTypedArray()) }
-        }
-    }
-
-    companion object {
-        private val DEFAULT_SEPARATOR = ","
-    }
 }
 
 

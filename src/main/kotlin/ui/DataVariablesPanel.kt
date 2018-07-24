@@ -22,8 +22,8 @@ import java.awt.event.MouseEvent
 import java.util.Objects
 
 class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()) {
-    private val dataVarList: JBList<VirtualFile>
-    private val myListModel: DefaultListModel<VirtualFile>
+    private val dataVarList: JBList<VirtualFileWrapper>
+    private val myListModel: DefaultListModel<VirtualFileWrapper>
     private val myPlotPanel: DataViewTabbedPanel
     private val provider: DataProvider
 
@@ -34,9 +34,9 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         myListModel = DefaultListModel()
         provider.setListModel(myListModel)
         dataVarList = JBList(myListModel)
-        dataVarList.cellRenderer = object : ColoredListCellRenderer<VirtualFile>() {
-            override fun customizeCellRenderer(list: JList<out VirtualFile>, value: VirtualFile, index: Int, selected: Boolean, hasFocus: Boolean) {
-                append(value.name)
+        dataVarList.cellRenderer = object : ColoredListCellRenderer<VirtualFileWrapper>() {
+            override fun customizeCellRenderer(list: JList<out VirtualFileWrapper>, value: VirtualFileWrapper, index: Int, selected: Boolean, hasFocus: Boolean) {
+                append(value.myFile.name)
             }
         }
 
@@ -58,7 +58,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         return ActionManager.getInstance().createActionToolbar("Data variables panel", toolbarGroup, false)
     }
 
-    //    private class MyListModel extends AbstractListModel<VirtualFile> {
+    //    private class MyListModel extends AbstractListModel<VirtualFileWrapper> {
     //        DataProvider provider = DataProvider.getProvider();
     //        @Override
     //        public int getSize() {
@@ -66,7 +66,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
     //        }
     //
     //        @Override
-    //        public VirtualFile getElementAt(int i) {
+    //        public VirtualFileWrapper getElementAt(int i) {
     //            return provider.getData().get(i);
     //        }
     //    }
@@ -78,8 +78,8 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
             println("nautilus s opening")
             val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
                     .withFileFilter { virtualFile -> virtualFile.extension == "csv" }
-            val virtualFile = FileChooser.chooseFile(descriptor, myProject, null) ?: return
-            provider.add(virtualFile)
+            val virtualFile= FileChooser.chooseFile(descriptor, myProject, null) ?: return
+            provider.add(VirtualFileWrapper(virtualFile))
         }
     }
 
@@ -94,9 +94,11 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         override fun mouseClicked(e: MouseEvent?) {
             if (e!!.clickCount == 2) {
                 val selected = dataVarList.selectedValue
-                myPlotPanel.addTab(selected.name, DataViewPanel(selected))
+                myPlotPanel.addTab(selected.myFile.name, DataViewPanel(selected))
                 val size = myPlotPanel.tabCount
                 myPlotPanel.selectedIndex = size - 1
+
+
             }
         }
     }
