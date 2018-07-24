@@ -30,9 +30,14 @@ class DataProvider private constructor() {
     }
 
     fun add(file: VirtualFile) {
-        //todo: check if unique
-        dataVariables.add(file)
-        notifyModelAboutAdding(file)
+        if (isUnique(file)) {
+            dataVariables.add(file)
+            notifyModelAboutAdding(file)
+        }
+    }
+
+    private fun isUnique(file: VirtualFile): Boolean {
+        return !dataVariables.contains(file);
     }
 
     internal fun removeAll() {
