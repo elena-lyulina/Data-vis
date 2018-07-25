@@ -14,11 +14,13 @@ class TableView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file
     init {
         DATA_VIEW_ID = "Table"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+        completePlotPanel()
+       // completeSettings()
     }
 
-    override fun show() {
-        plotPanel.removeAll()
-        // 2 cause headers + data, else it will be error :(
+
+    override fun completePlotPanel() {
+        myPlotPanel.removeAll()
         if (file.parsed) {
             val model = DataTableModel(file.headers, file.columns)
             // todo: headers
@@ -36,9 +38,10 @@ class TableView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file
             //table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
             //JBScrollPane pane = new JBScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS );
             //myPanel.add(pane);
-            plotPanel.add(ScrollPaneFactory.createScrollPane(table))
+            myPlotPanel.add(ScrollPaneFactory.createScrollPane(table))
 
         }
+
     }
 
 }

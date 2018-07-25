@@ -10,5 +10,6 @@ class BarView(file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, pane
     init {
         DATA_VIEW_ID = "Bar chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+        completePlotPanel()
     }
 }
