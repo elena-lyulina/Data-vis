@@ -10,6 +10,7 @@ class ScatterView(file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, 
     init {
         DATA_VIEW_ID = "Scatter chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+        completePlotPanel()
     }
 
 

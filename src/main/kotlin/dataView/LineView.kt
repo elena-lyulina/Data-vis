@@ -10,5 +10,6 @@ class LineView(file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, pan
     init {
         DATA_VIEW_ID = "Line chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+        completePlotPanel()
     }
 }
