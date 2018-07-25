@@ -19,9 +19,8 @@ class TableView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file
     override fun show() {
         plotPanel.removeAll()
         // 2 cause headers + data, else it will be error :(
-        // todo: create better parser
-        if (file.parsedForTable.size > 2) {
-            val model = DataTableModel(file.parsedForTable)
+        if (file.parsed) {
+            val model = DataTableModel(file.headers, file.columns)
             // todo: headers
             val table = object : JBTable(model) {
                 override fun prepareRenderer(renderer: TableCellRenderer, row: Int, column: Int): Component {
