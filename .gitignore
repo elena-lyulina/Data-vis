@@ -81,7 +81,7 @@ fabric.properties
 hs_err_pid*
 
 /src/main/kotlin/examples/
-/src/main/kotlin/resources/data
+/src/main/resources/data
 /lib/
 .gradle/
 .idea/
