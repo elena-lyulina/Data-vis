@@ -18,8 +18,7 @@ internal class DataViewPanel(private val myFile: VirtualFileWrapper) : JPanel(Bo
     init {
         plotPanel = JPanel(CardLayout())
         dataViewKinds = Arrays.asList(TableView(myFile, plotPanel), BarView(myFile, plotPanel), ScatterView(myFile, plotPanel), LineView(myFile, plotPanel))
-        dataViewKinds.forEach { view -> plotPanel.add(view.DATA_VIEW_ID, view.myPlotPanel) }
-        //dataViewKinds[0].show()
+        dataViewKinds.forEach { view -> plotPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
         add(createToolbar().component, BorderLayout.NORTH)
         add(plotPanel, BorderLayout.CENTER)
     }

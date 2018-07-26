@@ -7,11 +7,12 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 
-data class Column @JvmOverloads constructor (var header: String, var values: MutableList<String> = ArrayList()) {
+class Column @JvmOverloads constructor (var header: String, var values: MutableList<String> = ArrayList()) {
+    var doubleValue = ArrayList<Double>()
     var canBeCastedToDouble: Boolean = true
-        set(isDouble: Boolean) {
-            if (!isDouble) field = false
-        }
+    override fun toString() : String {
+        return header
+    }
 }
 
 public class VirtualFileWrapper (val myFile: VirtualFile) {
@@ -20,7 +21,7 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
     }
 
     lateinit var headers: List<String>
-    lateinit var columns: List<Column>
+    public lateinit var columns: List<Column>
     var parsed: Boolean = false
     init {
         parsed = parseCSV()
@@ -41,12 +42,12 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
 
             var record: Array<String>?
             headers = csvReader.readNext().toList()
-            if (headers == null)
+            if (headers.isEmpty())
                 return false
             else {
-                val size = headers!!.size
+                val size = headers.size
                 columns = ArrayList()
-                headers!!.forEach { h ->  (columns as ArrayList<Column>).add(Column(h)) }
+                headers.forEach { h ->  (columns as ArrayList<Column>).add(Column(h)) }
 
 
                 record = csvReader.readNext()
@@ -60,7 +61,14 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
 
                     (columns as ArrayList<Column>).stream().forEach {
                         c -> c.values.add(record!![i])
-                        c.canBeCastedToDouble = isDouble(record!![i])
+                        val doubleOrNull = record!![i].toDoubleOrNull()
+                        if (doubleOrNull == null) {
+                            c.canBeCastedToDouble = false
+                            c.doubleValue.clear()
+                        }
+                        else {
+                            c.doubleValue.add(doubleOrNull!!)
+                        }
                         i++
                     }
                     record = csvReader.readNext()
