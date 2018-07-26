@@ -9,18 +9,21 @@ import javax.swing.table.TableCellRenderer
 import java.awt.*
 
 class TableView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, panel) {
+    override fun completeSettingsPanel() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private val IMAGE_PATH = "/icons/table.png"
 
     init {
         DATA_VIEW_ID = "Table"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+        addSettings()
         completePlotPanel()
-       // completeSettings()
     }
 
 
     override fun completePlotPanel() {
-        myPlotPanel.removeAll()
         if (file.parsed) {
             val model = DataTableModel(file.headers, file.columns)
             // todo: headers
@@ -38,9 +41,11 @@ class TableView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file
             //table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
             //JBScrollPane pane = new JBScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS );
             //myPanel.add(pane);
-            myPlotPanel.add(ScrollPaneFactory.createScrollPane(table))
+            myViewPanel.add(ScrollPaneFactory.createScrollPane(table))
+        //    myPlotPanel.add(ScrollPaneFactory.createScrollPane(table))
 
         }
+
 
     }
 
