@@ -27,6 +27,10 @@ class LineView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
     var points = ArrayList<Point>()
     var fxPanel = JFXPanel()
 
+    private val X_CHOOSER_ID = "xChooser"
+    private val Y_CHOOSER_ID = "yChooser"
+
+
     init {
         DATA_VIEW_ID = "Line chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
@@ -34,6 +38,8 @@ class LineView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
         addSettings()
     }
 
+
+    // todo: if there is no double values?
     override fun completeSettingsPanel() {
         val xModel = DefaultComboBoxModel<Column>()
         val yModel = DefaultComboBoxModel<Column>()
@@ -42,28 +48,44 @@ class LineView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
 
         file.columns.filter { c -> c.canBeCastedToDouble }.forEach { c -> xModel.addElement(c); yModel.addElement(c) }
 
-        xChooser.addMyListener()
-        yChooser.addMyListener()
+        xChooser.addMyListener(X_CHOOSER_ID)
+        yChooser.addMyListener(Y_CHOOSER_ID)
 
         mySettingsPanel.add(xChooser)
         mySettingsPanel.add(yChooser)
 
+//        xChooser.selectedIndex = 0;
+//        yChooser.selectedIndex = 0;
+
         val xValue = xModel.getElementAt(xChooser.selectedIndex).doubleValue
         val yValue = yModel.getElementAt(yChooser.selectedIndex).doubleValue
-        xModel.getElementAt(xChooser.selectedIndex)
+
+
         IntStream.range(0, minOf(xValue.size,
                 yValue.size)).forEach {
-            i -> points.add(Point(xValue[i], yValue[i]))
+            i -> points.add(Point(xValue[i], yValue[i]));
+           // println("${xValue[i]} ${yValue[i]}")
         }
 
-        completePlotPanel()
+        // completePlotPanel()
+        // width and height of plotPanel don't fit :(
+
+        myPlotPanel.add(fxPanel)
+
     }
 
-    fun ComboBox<Column>.addMyListener() {
+
+
+
+    private fun ComboBox<Column>.addMyListener(id: String) {
         addActionListener() {
             val values = model.getElementAt(selectedIndex).doubleValue
                 IntStream.range(0, minOf(points.size, values.size)).forEach { i: Int ->
-                    points[i] = Point(values[i].toDouble(), points[i].y) }
+                    if (id.equals(X_CHOOSER_ID))
+                        points[i] = Point(values[i], points[i].y)
+                    else if (id.equals(Y_CHOOSER_ID))
+                        points[i] = Point(points[i].x, values[i])
+                }
                 completePlotPanel()
             }
     }
@@ -74,8 +96,8 @@ class LineView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
     override fun completePlotPanel() {
         myPlotPanel.repaint()
         val scene = createScene(points)
+        fxPanel.repaint()
         fxPanel.scene = scene
-        myPlotPanel.add(fxPanel)
     }
 
     private fun createScene(points: ArrayList<Point>): Scene {
@@ -90,9 +112,11 @@ class LineView(var file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
 
     private fun VizContext.naturalLogScale(points: List<Point>) {
 
-        val margins = Margins(40.5, 30.5, 50.5, 50.5)
+        val margins = Margins(100.0, 100.0, 100.0, 100.0)
         val width = myViewPanel.width - margins.hMargins
         val height = myViewPanel.height - margins.vMargins - mySettingsPanel.height
+
+        println("$width, $height")
 
         transform {
             translate(x = margins.left, y = margins.top)

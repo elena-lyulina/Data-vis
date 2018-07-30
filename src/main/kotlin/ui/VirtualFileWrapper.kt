@@ -67,7 +67,7 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
                             c.doubleValue.clear()
                         }
                         else {
-                            c.doubleValue.add(doubleOrNull!!)
+                            c.doubleValue.add(doubleOrNull)
                         }
                         i++
                     }
