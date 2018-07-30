@@ -97,8 +97,6 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
                 myPlotPanel.addTab(selected.myFile.name, DataViewPanel(selected))
                 val size = myPlotPanel.tabCount
                 myPlotPanel.selectedIndex = size - 1
-
-
             }
         }
     }

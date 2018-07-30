@@ -44,7 +44,7 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
 
         var settingsButton = JButton()
         settingsButton.icon = AllIcons.General.Settings
-        settingsButton.addActionListener { _ -> mySettingsPanel.isVisible = !mySettingsPanel.isVisible }
+        settingsButton.addActionListener { _ -> mySettingsPanel.isVisible = !mySettingsPanel.isVisible}
       //  settingsButton.preferredSize = Dimension(80, 80)
 
         gc.gridx = 0
