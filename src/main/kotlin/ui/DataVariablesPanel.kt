@@ -47,7 +47,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
 
     fun init(toolWindow: ToolWindow) {
         val contentFactory = ContentFactory.SERVICE.getInstance()
-        val content = contentFactory.createContent(this, "Data variables", false)
+        val content = contentFactory.createContent(this, "", false)
         content.isCloseable = false
         toolWindow.contentManager.addContent(content)
     }
@@ -75,7 +75,6 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
     private inner class LoadDataAction internal constructor() : AnAction("Load data", "Load data", AllIcons.Actions.Download) {
 
         override fun actionPerformed(e: AnActionEvent) {
-            println("nautilus s opening")
             val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
                     .withFileFilter { virtualFile -> virtualFile.extension == "csv" }
             val virtualFile= FileChooser.chooseFile(descriptor, myProject, null) ?: return
@@ -104,7 +103,6 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
     companion object {
 
         private val LOG = Logger.getInstance(DataVariablesPanel::class.java)
-
 
         fun getInstance(project: Project): DataVariablesPanel {
             return ServiceManager.getService(project, DataVariablesPanel::class.java)

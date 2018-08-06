@@ -46,6 +46,7 @@ class DataProvider private constructor() {
         notifyModelAboutRemoving()
     }
 
+    //todo : create singleton not as class but as object?
     companion object {
         @Volatile
         private var myProvider: DataProvider? = null
