@@ -8,7 +8,6 @@ import ui.VirtualFileWrapper
 import javax.swing.*
 import java.awt.*
 import java.awt.CardLayout
-import javax.swing.border.Border
 
 
 internal interface View {
@@ -19,33 +18,52 @@ internal interface View {
 
 abstract class AbstractView internal constructor(internal var dataFile: VirtualFileWrapper, internal var cardPlotPanel: JPanel) : View {
     var DATA_VIEW_ID: String? = null
+    var actionIcon: ImageIcon? = null
+
     private val ICON_SIZE = 50
     private val SETTINGS_BUTTON_SIZE = 100
 
-    internal var actionIcon: ImageIcon? = null
     var myViewPanel = JPanel()
     private var mySettings = JPanel()
     protected var mySettingsPanel = JPanel()
     protected var myPlotPanel = JPanel()
 
+    protected val  myVisFactory: VisFactory = GgplotFactory()
+    protected val myVisualizer : Visualizer
+    // add button to change library?
+
     override val action: AnAction
         get() = Action()
 
-    override fun completePlotPanel() {
-       // myViewPanel.removeAll()
-        addSettings()
-      //  myViewPanel.add(JLabel(DATA_VIEW_ID))
-        myViewPanel.repaint()
+    // myViewPanel is component of cardPlotPanel, so here i need to complete myViewPanel
+    init {
+        myVisualizer = myVisFactory.createVisualizer()
+        completeMyViewPanel()
     }
 
-    fun addSettings() {
+    // myViewPanel consists of mySettings and PlotPanel
+    // (mySettings consists of SettingsButton and SettingsPanel)
+    private fun completeMyViewPanel() {
+      //  completePlotPanel()
+        completeMySettings()
+
+        myViewPanel.layout = BoxLayout(myViewPanel, BoxLayout.Y_AXIS)
+        myViewPanel.add(mySettings)
+        myViewPanel.add(myPlotPanel)
+
+        myPlotPanel.background = Color.WHITE
+    }
+
+
+
+    fun completeMySettings() {
         mySettings.layout = GridBagLayout();
         val gc = GridBagConstraints()
 
-        var settingsButton = JButton()
+        val settingsButton = JButton()
         settingsButton.icon = AllIcons.General.Settings
         settingsButton.addActionListener { _ -> mySettingsPanel.isVisible = !mySettingsPanel.isVisible}
-      //  settingsButton.preferredSize = Dimension(80, 80)
+        //  settingsButton.preferredSize = Dimension(80, 80)
 
         gc.gridx = 0
         gc.gridy = 0
@@ -56,26 +74,14 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
         settingsButton.minimumSize = Dimension(SETTINGS_BUTTON_SIZE, SETTINGS_BUTTON_SIZE)
         mySettings.add(settingsButton, gc)
 
-//        var separator = JSeparator(SwingConstants.VERTICAL)
-//        separator.preferredSize = Dimension(mySettings.width, 10)
-//
-//        val sep = JSeparator()
-//        sep.preferredSize = Dimension(mySettings.width, 10)
-//        gc.fill = GridBagConstraints.HORIZONTAL
-//        gc.weighty = 1.0
-//        mySettingsPanel.add(sep, gc)
-
         gc.gridx = 1
         gc.gridy = 0
         gc.weightx = 1.0
         gc.weighty = 1.0
         mySettings.add(mySettingsPanel, gc)
 
-
-        myViewPanel.layout = BoxLayout(myViewPanel, BoxLayout.Y_AXIS)
-        myViewPanel.add(mySettings)
-        myViewPanel.add(myPlotPanel)
     }
+
 
 
 
@@ -90,7 +96,7 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
 //    }
 
 
-    private inner class Action internal constructor() : AnAction(DATA_VIEW_ID, "Show dataFile as " + DATA_VIEW_ID!!, actionIcon) {
+    private inner class Action : AnAction(DATA_VIEW_ID, "Show dataFile as " + DATA_VIEW_ID!!, actionIcon) {
 
         override fun actionPerformed(e: AnActionEvent) {
             val cl = cardPlotPanel.getLayout() as CardLayout

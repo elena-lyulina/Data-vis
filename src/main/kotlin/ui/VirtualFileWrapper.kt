@@ -6,30 +6,32 @@ import com.opencsv.CSVReader
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
+import java.util.stream.IntStream
 
-class Column @JvmOverloads constructor (var header: String, var values: MutableList<String> = ArrayList()) {
-    var doubleValue = ArrayList<Double>()
+data class Column @JvmOverloads constructor (var header: String, var values: MutableList<String> = ArrayList()) {
+    var doubleValues = ArrayList<Double>()
     var canBeCastedToDouble: Boolean = true
     override fun toString() : String {
         return header
     }
 }
 
-public class VirtualFileWrapper (val myFile: VirtualFile) {
+class VirtualFileWrapper (val myFile: VirtualFile) {
     companion object {
         private val LOG = Logger.getInstance(DataToolWindowFactory::class.java)
     }
 
     lateinit var headers: List<String>
-    public lateinit var columns: List<Column>
+    lateinit var columns: ArrayList<Column>
     var parsed: Boolean = false
     init {
         parsed = parseCSV()
     }
 
 
-
-    // using OpenCSV
+    /**
+     * parsing file into columns using OpenCSV lib
+     */
     //todo: create tests
     private fun parseCSV() : Boolean {
         var fileReader: BufferedReader? = null
@@ -47,14 +49,21 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
             else {
                 val size = headers.size
                 columns = ArrayList()
-                headers.forEach { h ->  (columns as ArrayList<Column>).add(Column(h)) }
+
+
+                // to replace empty headers:
+                IntStream.range(0, headers.size).forEach { i: Int ->
+                    if (headers[i].isEmpty()) columns.add(Column("column ${i}"))
+                    else columns.add(Column(headers[i]))
+                }
+               // headers.forEach { h ->  (columns as ArrayList<Column>).add(Column(h)) }
 
 
                 record = csvReader.readNext()
                 while (record != null) {
                     if (record.size != size) {
                         // or add extra elements?
-                        LOG.warn("Amount of columns have changed due CSV parsing")
+                        LOG.warn("Amount of columns has changed due CSV parsing")
                         return false
                     }
                     var i = 0
@@ -64,10 +73,10 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
                         val doubleOrNull = record!![i].toDoubleOrNull()
                         if (doubleOrNull == null) {
                             c.canBeCastedToDouble = false
-                            c.doubleValue.clear()
+                            c.doubleValues.clear()
                         }
                         else {
-                            c.doubleValue.add(doubleOrNull)
+                            c.doubleValues.add(doubleOrNull)
                         }
                         i++
                     }
@@ -92,9 +101,6 @@ public class VirtualFileWrapper (val myFile: VirtualFile) {
         return true;
     }
 
-    private fun isDouble (toCheck: String) : Boolean {
-        return toCheck.toDoubleOrNull() != null
-    }
 }
 
 

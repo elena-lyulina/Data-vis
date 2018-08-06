@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.3.4'
+    id 'org.jetbrains.intellij' version '0.3.5'
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
 }
 
@@ -11,16 +11,30 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     maven { url  "https://dl.bintray.com/data2viz/data2viz" }
+    maven { url "https://mvnrepository.com/artifact/org.apache.batik/com.springsource.org.apache.batik.dom.svg"}
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
     compile 'io.data2viz:d2v-axis-jvm:0.6.0'
     compile "io.data2viz:d2v-shape-jvm:0.6.0"
     compile "io.data2viz:d2v-chord-jvm:0.6.0"
+
+   // compile group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.7'
+    // compile group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.7'
+    // !!!!! it works only with 1.7 version
+    // compile group: 'org.apache.xmlgraphics', name: 'batik-svg-dom', version: '1.7'
+
+
     compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
-    compile files("lib/gog-awt_deploy_woj.jar", "lib/gog-awt_deploy-src_woj.jar")
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+   // compile files("lib/gog-awt_deploy-src_WO_j_b.jar", "lib/gog-awt_deploy_WO_j_b.jar")
+    // libraries with org.apache.batik:
+    compile files("lib/gog-awt_deploy_woj.jar", "lib/Foo.jar")
+    testCompile (group: 'junit', name: 'junit', version: '4.12') {
+        //exclude group: 'org.hamcrest', module:'hamcrest-core'
+
+    }
 }
 
 sourceSets {
@@ -39,10 +53,22 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 intellij {
-    version '2018.1.5'
+    version '2018.2'
 }
 patchPluginXml {
     changeNotes """
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
 }
+
+
+/*
+Warning:<i><b>root project 'Data-Vis': Unable to build Kotlin project configuration</b>
+Details: java.lang.reflect.InvocationTargetException: null
+Caused by: org.gradle.api.internal.artifacts.ivyservice.DefaultLenientConfiguration$ArtifactResolveException: Could not resolve all files for configuration ':compileClasspath'.
+Caused by: org.gradle.internal.resolve.ArtifactNotFoundException: Could not find lib/xercesImpl-2.11.0.jar (com.jetbrains:ideaIC:2018.2).
+Searched in the following locations:
+    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/23c6ef0bbf1c37259081353251774c1afd9d4797/ideaIC-2018.2/com.jetbrains/ideaIC/2018.2/lib/xercesImpl-2.11.0-2018.2.jar
+    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/23c6ef0bbf1c37259081353251774c1afd9d4797/ideaIC-2018.2/lib/xercesImpl-2.11.0.jar
+    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/e935ec9f9231a0789831f04f48053824c57b4bf5/lib/xercesImpl-2.11.0-2018.2-[classifier].jar</i>
+ */
