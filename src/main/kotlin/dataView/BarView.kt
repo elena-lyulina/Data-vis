@@ -8,6 +8,7 @@ import javax.swing.ImageIcon
 import javax.swing.JPanel
 
 class BarView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(file, panel) {
+    override var DATA_VIEW_ID= "Bar chart"
     private val IMAGE_PATH = "/icons/barChart.png"
 
     private val valueModel = DefaultComboBoxModel<Column>()
@@ -15,7 +16,6 @@ class BarView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(fi
 
 
     init {
-        DATA_VIEW_ID= "Bar chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
         completeSettingsPanel()
         completePlotPanel()
@@ -24,7 +24,7 @@ class BarView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(fi
     override fun completeSettingsPanel() {
 
         file.columns.forEach { c -> valueModel.addElement(c) }
-        valueChooser.addActionListener { e -> completePlotPanel() }
+        valueChooser.addActionListener { completePlotPanel() }
         mySettingsPanel.add(valueChooser)
 
     }

@@ -10,8 +10,9 @@ import javax.swing.table.TableCellRenderer
 import java.awt.*
 
 class TableView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(file, panel) {
+    override var DATA_VIEW_ID = "Table"
+
     init {
-        DATA_VIEW_ID = "Table"
         val IMAGE_PATH = "/icons/table.png"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
         completePlotPanel()

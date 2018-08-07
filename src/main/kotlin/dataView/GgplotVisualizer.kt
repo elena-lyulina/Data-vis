@@ -101,7 +101,7 @@ class GgplotVisualizer : Visualizer() {
 
 
 class ggplotLib : Visualizer() {
-    val VIEW_SIZE = DoubleVector(1000.0, 1000.0)
+    val VIEW_SIZE = DoubleVector(1500.0, 1000.0)
 
     init {
         println(javaClass.classLoader)
@@ -162,6 +162,7 @@ class ggplotLib : Visualizer() {
                 "               {" +
                 "                  'geom':  {" +
                 "                             'name': 'point'," +
+                "                             'colour': '#4382b7'," +
                 "                             'size': 5" +
                 "                           }" +
                 "               }" +
@@ -179,19 +180,21 @@ class ggplotLib : Visualizer() {
                 "   'layers': [" +
                 "               {" +
                 "                  'geom':  {" +
-                "                             'name': 'point'," +
-                "                             'size': 5" +
-                "                           }" +
-                "               },{  " +
-                "                   'geom':  {" +
                 "                              'name': 'line'," +
-                "                             'size': 2," +
-                "                             'mapping': {"  +
+                "                              'size': 2," +
+                "                               'colour': '#a7ceef'," +
+                "                               'mapping': {"  +
                 "                                          'x': 'x'," +
                 "                                          'y': 'y'" +
                 "                                        }" +
                 "                           }" +
-                "               }" +
+                "               },{  " +
+                "                  'geom':  {" +
+                "                                        'name': 'point'," +
+                "                                        'size': 5," +
+                "                                        'colour': '#4382b7'" +
+                "                                      }" +
+                "                 }" +
                 "           ]" +
                 "        }" +
                 ""
@@ -224,7 +227,9 @@ class ggplotLib : Visualizer() {
                 "   'layers': [" +
                 "               {" +
                 "                  'geom':  {" +
-                "                             'name': 'bar'" +
+                "                             'name': 'bar'," +
+                "                             'fill': '#a7ceef'" +
+//                "                             'colour': 'black'"
                 "                           }" +
                 "               }" +
                 "           ]" +

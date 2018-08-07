@@ -11,17 +11,13 @@ import java.awt.CardLayout
 
 
 internal interface View {
-    val action: AnAction
+    var DATA_VIEW_ID: String
     fun completePlotPanel()
     fun completeSettingsPanel()
 }
 
 abstract class AbstractView internal constructor(internal var dataFile: VirtualFileWrapper, internal var cardPlotPanel: JPanel) : View {
-    var DATA_VIEW_ID: String? = null
     var actionIcon: ImageIcon? = null
-
-    private val ICON_SIZE = 50
-    private val SETTINGS_BUTTON_SIZE = 100
 
     var myViewPanel = JPanel()
     private var mySettings = JPanel()
@@ -31,9 +27,6 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
     protected val  myVisFactory: VisFactory = GgplotFactory()
     protected val myVisualizer : Visualizer
     // add button to change library?
-
-    override val action: AnAction
-        get() = Action()
 
     // myViewPanel is component of cardPlotPanel, so here i need to complete myViewPanel
     init {
@@ -59,34 +52,22 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
     fun completeMySettings() {
         mySettings.layout = GridBagLayout();
         val gc = GridBagConstraints()
-
-        val settingsButton = JButton()
-        settingsButton.icon = AllIcons.General.Settings
-        settingsButton.addActionListener { _ -> mySettingsPanel.isVisible = !mySettingsPanel.isVisible}
-        //  settingsButton.preferredSize = Dimension(80, 80)
-
-        gc.gridx = 0
-        gc.gridy = 0
-        gc.weightx = 1.0
-        gc.weighty = 1.0
-        gc.anchor = GridBagConstraints.NORTHWEST
-        settingsButton.preferredSize = Dimension(SETTINGS_BUTTON_SIZE, SETTINGS_BUTTON_SIZE)
-        settingsButton.minimumSize = Dimension(SETTINGS_BUTTON_SIZE, SETTINGS_BUTTON_SIZE)
-        mySettings.add(settingsButton, gc)
-
-        gc.gridx = 1
-        gc.gridy = 0
-        gc.weightx = 1.0
-        gc.weighty = 1.0
+        mySettings.preferredSize = Dimension(100, 200)
+        mySettings.background = Color.BLACK
         mySettings.add(mySettingsPanel, gc)
 
     }
 
+    companion object {
+        fun scaleIcon(icon: ImageIcon): ImageIcon {
+            val ICON_SIZE = 50
+            return ImageIcon(icon.image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_DEFAULT))
+        }
+    }
 
 
-
-    internal fun scaleIcon(icon: ImageIcon): ImageIcon {
-        return ImageIcon(icon.image.getScaledInstance(ICON_SIZE, ICON_SIZE, Image.SCALE_DEFAULT))
+    fun changeVisibilityOfSettings() {
+        mySettings.isVisible = !mySettings.isVisible
     }
 
 //    override fun show() {
@@ -94,14 +75,6 @@ abstract class AbstractView internal constructor(internal var dataFile: VirtualF
 //        cl.show(cardPlotPanel, DATA_VIEW_ID)
 //
 //    }
-
-
-    private inner class Action : AnAction(DATA_VIEW_ID, "Show dataFile as " + DATA_VIEW_ID!!, actionIcon) {
-
-        override fun actionPerformed(e: AnActionEvent) {
-            val cl = cardPlotPanel.getLayout() as CardLayout
-            cl.show(cardPlotPanel, DATA_VIEW_ID)        }
-    }
 
 }
 
