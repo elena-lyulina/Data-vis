@@ -29,11 +29,11 @@ public final class SwingDemoUtil {
             component.setMaximumSize(new Dimension((int) viewSize.x, (int) viewSize.y));
             component.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            panel.add(Box.createRigidArea(new Dimension(0, 5)));
+           // panel.add(Box.createRigidArea(new Dimension(0, 5)));
             panel.add(component);
         }
 
-        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+       // panel.add(Box.createRigidArea(new Dimension(0, 5)));
     }
 
     private static JComponent createComponent(DoubleVector viewSize, Map<String, Object> plotSpec) {

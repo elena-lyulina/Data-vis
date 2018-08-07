@@ -21,7 +21,7 @@ import java.util.stream.IntStream
 
 
 class LineView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, panel) {
-
+    override var DATA_VIEW_ID = "Line chart"
     private val IMAGE_PATH = "/icons/lineChart.png"
 
     private val xModel = DefaultComboBoxModel<Column>()
@@ -31,7 +31,6 @@ class LineView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
     private val yChooser = ComboBox<Column>(yModel)
 
     init {
-        DATA_VIEW_ID = "Line chart"
         actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
         completeSettingsPanel()
         completePlotPanel()
@@ -41,8 +40,8 @@ class LineView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(file,
     // todo: if there is no double values
     override fun completeSettingsPanel() {
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
-        xChooser.addActionListener { e -> completePlotPanel() }
-        yChooser.addActionListener { e -> completePlotPanel() }
+        xChooser.addActionListener { completePlotPanel() }
+        yChooser.addActionListener { completePlotPanel() }
 
         mySettingsPanel.add(xChooser)
         mySettingsPanel.add(yChooser)

@@ -38,10 +38,13 @@ abstract class Visualizer {
                     return component
                 }
             }
+
+
             table.autoResizeMode = JTable.AUTO_RESIZE_OFF
             //table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
             //JBScrollPane pane = new JBScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS );
             //myPanel.add(pane);
+            table.fillsViewportHeight = true
             plotPanel.add(ScrollPaneFactory.createScrollPane(table))
             //myPlotPanel.add(ScrollPaneFactory.createScrollPane(table))
         }

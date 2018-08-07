@@ -8,7 +8,7 @@ import javax.swing.ImageIcon
 import javax.swing.JPanel
 
 class ScatterView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, panel) {
-
+    override var DATA_VIEW_ID = "Line chart"
     private val IMAGE_PATH = "/icons/scatterChart.png"
 
     private val xModel = DefaultComboBoxModel<Column>()
@@ -28,8 +28,8 @@ class ScatterView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(fi
     override fun completeSettingsPanel() {
 
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
-        xChooser.addActionListener { e -> completePlotPanel() }
-        yChooser.addActionListener { e -> completePlotPanel() }
+        xChooser.addActionListener { completePlotPanel() }
+        yChooser.addActionListener { completePlotPanel() }
 
         mySettingsPanel.add(xChooser)
         mySettingsPanel.add(yChooser)
