@@ -1,4 +1,4 @@
-package dataView
+package visualization
 
 import com.intellij.util.lang.UrlClassLoader
 import jetbrains.datalore.base.geometry.DoubleVector
@@ -17,7 +17,7 @@ import kotlin.reflect.full.createInstance
 class GgplotVisualizer : Visualizer() {
 
     private val GG_LIB_NAME = "gog-awt_deploy_woj.jar"
-    private val GGPLOT_NAME = "dataView.ggplotLib"
+    private val GGPLOT_NAME = "visualization.ggplotLib"
 
     private var ggplotLib: Any
     private lateinit var myClassLoader: URLClassLoader
