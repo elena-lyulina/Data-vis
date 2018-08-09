@@ -4,6 +4,14 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
 }
 
+apply plugin: 'kotlin'
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -11,11 +19,13 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     maven { url  "https://dl.bintray.com/data2viz/data2viz" }
-    maven { url "https://mvnrepository.com/artifact/org.apache.batik/com.springsource.org.apache.batik.dom.svg"}
+    maven { url "https://mvnrepository.com/artifact/org.apache.batik/com.springsource.org.apache.batik.dom.svg" }
+    jcenter()
 }
 
 dependencies {
     compile ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
 
     compile 'io.data2viz:d2v-axis-jvm:0.6.0'
     compile "io.data2viz:d2v-shape-jvm:0.6.0"
@@ -60,15 +70,3 @@ patchPluginXml {
       Add change notes here.<br>
       <em>most HTML tags may be used</em>"""
 }
-
-
-/*
-Warning:<i><b>root project 'Data-Vis': Unable to build Kotlin project configuration</b>
-Details: java.lang.reflect.InvocationTargetException: null
-Caused by: org.gradle.api.internal.artifacts.ivyservice.DefaultLenientConfiguration$ArtifactResolveException: Could not resolve all files for configuration ':compileClasspath'.
-Caused by: org.gradle.internal.resolve.ArtifactNotFoundException: Could not find lib/xercesImpl-2.11.0.jar (com.jetbrains:ideaIC:2018.2).
-Searched in the following locations:
-    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/23c6ef0bbf1c37259081353251774c1afd9d4797/ideaIC-2018.2/com.jetbrains/ideaIC/2018.2/lib/xercesImpl-2.11.0-2018.2.jar
-    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/23c6ef0bbf1c37259081353251774c1afd9d4797/ideaIC-2018.2/lib/xercesImpl-2.11.0.jar
-    file:/home/user/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/2018.2/e935ec9f9231a0789831f04f48053824c57b4bf5/lib/xercesImpl-2.11.0-2018.2-[classifier].jar</i>
- */
