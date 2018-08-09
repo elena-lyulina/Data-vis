@@ -17,6 +17,8 @@ import data.DataWrapper
 
 import javax.swing.*
 import java.awt.*
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 
@@ -41,6 +43,8 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         }
 
         dataVarList.addMouseListener(DoubleClickMouseListener())
+        dataVarList.addKeyListener(EnterPressingListener())
+
         //not sure do i need scroll pane or it s added automatically todo: check it
         this.add(ScrollPaneFactory.createScrollPane(dataVarList), BorderLayout.CENTER)
     }
@@ -90,13 +94,32 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         }
     }
 
+
+    private fun selectVariable() {
+        val selected = dataVarList.selectedValue
+        myPlotPanel.addTab(selected.name, DataViewPanel(selected))
+        val size = myPlotPanel.tabCount
+        myPlotPanel.selectedIndex = size - 1
+
+        LOG.info("${selected.name} selected")
+    }
+
+
+    private inner class EnterPressingListener : KeyAdapter() {
+
+        override fun keyReleased(e: KeyEvent) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                selectVariable()
+            }
+        }
+
+    }
+
     private inner class DoubleClickMouseListener : MouseAdapter() {
+
         override fun mouseClicked(e: MouseEvent?) {
             if (e!!.clickCount == 2) {
-                val selected = dataVarList.selectedValue
-                myPlotPanel.addTab(selected.name, DataViewPanel(selected))
-                val size = myPlotPanel.tabCount
-                myPlotPanel.selectedIndex = size - 1
+                selectVariable()
             }
         }
     }
