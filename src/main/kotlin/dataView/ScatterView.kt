@@ -1,15 +1,18 @@
 package dataView
 
 import com.intellij.openapi.ui.ComboBox
-import ui.Column
-import ui.VirtualFileWrapper
+import data.Column
+import data.DataWrapper
 import javax.swing.DefaultComboBoxModel
 import javax.swing.ImageIcon
-import javax.swing.JPanel
 
-class ScatterView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(file, panel) {
-    override var DATA_VIEW_ID = "Line chart"
+class ScatterView(val file: DataWrapper) : AbstractView(file) {
+
+    override val DATA_VIEW_ID = "Scatter chart"
     private val IMAGE_PATH = "/icons/scatterChart.png"
+    override val actionIcon: ImageIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+
+    override val hasSettings = true
 
     private val xModel = DefaultComboBoxModel<Column>()
     private val xChooser = ComboBox<Column>(xModel)
@@ -18,8 +21,6 @@ class ScatterView(val file: VirtualFileWrapper, panel: JPanel) : AbstractView(fi
     private val yChooser = ComboBox<Column>(yModel)
 
     init {
-        DATA_VIEW_ID = "Scatter chart"
-        actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
         completeSettingsPanel()
         completePlotPanel()
 

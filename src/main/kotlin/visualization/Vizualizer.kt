@@ -1,8 +1,9 @@
-package dataView
+package visualization
 
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.table.JBTable
-import ui.VirtualFileWrapper
+import dataView.DataTableModel
+import data.DataWrapper
 import java.awt.Component
 import javax.swing.JPanel
 import javax.swing.JTable
@@ -24,7 +25,7 @@ abstract class Visualizer {
     abstract fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>)
     abstract fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>)
 
-    fun drawTable(dataFile: VirtualFileWrapper, plotPanel: JPanel) {
+    fun drawTable(dataFile: DataWrapper, plotPanel: JPanel) {
         if (dataFile.parsed) {
             val model = DataTableModel(dataFile.headers, dataFile.columns)
             // todo: headers

@@ -1,7 +1,7 @@
 package dataView
 
 import com.intellij.openapi.diagnostic.Logger
-import ui.Column
+import data.Column
 
 
 import javax.swing.event.TableModelListener

@@ -1,20 +1,18 @@
 package dataView
 
-import com.intellij.ui.ScrollPaneFactory
-import com.intellij.ui.layout.panel
-import com.intellij.ui.table.JBTable
-import ui.VirtualFileWrapper
-
+import data.DataWrapper
 import javax.swing.*
-import javax.swing.table.TableCellRenderer
-import java.awt.*
 
-class TableView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(file, panel) {
-    override var DATA_VIEW_ID = "Table"
+class TableView(val file: DataWrapper) : AbstractView(file) {
+
+    override val DATA_VIEW_ID = "Table"
+    private val IMAGE_PATH = "/icons/table.png"
+    override val actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+
+    override val hasSettings: Boolean = false
 
     init {
-        val IMAGE_PATH = "/icons/table.png"
-        actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+
         completePlotPanel()
         completeSettingsPanel()
     }

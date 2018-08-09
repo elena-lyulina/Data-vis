@@ -1,28 +1,29 @@
 package dataView
 
 import com.intellij.openapi.ui.ComboBox
-import ui.Column
-import ui.VirtualFileWrapper
+import data.Column
+import data.DataWrapper
 import javax.swing.DefaultComboBoxModel
 import javax.swing.ImageIcon
-import javax.swing.JPanel
 
-class BarView(val file: VirtualFileWrapper, var panel: JPanel) : AbstractView(file, panel) {
-    override var DATA_VIEW_ID= "Bar chart"
+class BarView(val file: DataWrapper) : AbstractView(file) {
+
+    override val DATA_VIEW_ID= "Bar chart"
     private val IMAGE_PATH = "/icons/barChart.png"
+    override val actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
+
+    override val hasSettings = true
 
     private val valueModel = DefaultComboBoxModel<Column>()
     private val valueChooser = ComboBox<Column>(valueModel)
 
 
     init {
-        actionIcon = scaleIcon(ImageIcon(javaClass.getResource(IMAGE_PATH)))
         completeSettingsPanel()
         completePlotPanel()
     }
 
     override fun completeSettingsPanel() {
-
         file.columns.forEach { c -> valueModel.addElement(c) }
         valueChooser.addActionListener { completePlotPanel() }
         mySettingsPanel.add(valueChooser)

@@ -1,4 +1,4 @@
-package dataView;
+package visualization;
 
 import com.intellij.ui.JBColor;
 import jetbrains.datalore.base.geometry.DoubleVector;
