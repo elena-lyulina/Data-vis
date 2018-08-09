@@ -3,16 +3,17 @@ package ui
 import com.intellij.openapi.actionSystem.*
 import data.DataWrapper
 import dataView.*
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.runBlocking
 
 import javax.swing.*
 import java.awt.*
-import java.util.Arrays
 
 
 // todo: open immediately when user clicks on data variable
-class DataViewPanel(myFile: DataWrapper) : JPanel(BorderLayout()) {
+class DataViewPanel(myData: DataWrapper) : JPanel(BorderLayout()) {
     private val tabbedActionPanel: JPanel
-    private val dataViewKinds: List<AbstractView>
+    private lateinit var dataViewKinds: List<AbstractView>
     private var currentOpenedView: AbstractView?
 
     private val SETTINGS_ICON_PATH = "/icons/settings.png"
@@ -20,7 +21,18 @@ class DataViewPanel(myFile: DataWrapper) : JPanel(BorderLayout()) {
 
     init {
         tabbedActionPanel = JPanel(CardLayout())
-        dataViewKinds = Arrays.asList(TableView(myFile), BarView(myFile), ScatterView(myFile), LineView(myFile))
+
+        runBlocking {
+
+            val table =  async { TableView(myData) }
+            val bar =  async { BarView(myData) }
+            val scatter = async { ScatterView(myData) }
+            val line = async { LineView(myData) }
+
+            dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
+
+        }
+
         dataViewKinds.forEach { view -> tabbedActionPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
         currentOpenedView = dataViewKinds[0]
         mySettingsAction = SettingsAction()
@@ -51,10 +63,10 @@ class DataViewPanel(myFile: DataWrapper) : JPanel(BorderLayout()) {
 
 
     private inner class SettingsAction : AnAction("Settings", "Settings", AbstractView.scaleIcon(ImageIcon(javaClass.getResource(SETTINGS_ICON_PATH)))) {
-       // quite stupid way to know, which dataView is open, but cardlayout doesn't allow to get this information soo
+        // quite stupid way to know, which dataView is open, but cardlayout doesn't allow to get this information soo
         override fun actionPerformed(e: AnActionEvent?) {
             currentOpenedView?.changeVisibilityOfSettings()
-           // todo: make settingsAction disable in case of not having settings?
+            // todo: make settingsAction disable in case of not having settings?
         }
 
     }
