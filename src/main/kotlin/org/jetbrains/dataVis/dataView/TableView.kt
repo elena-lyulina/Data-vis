@@ -1,8 +1,8 @@
-package dataView
+package org.jetbrains.dataVis.dataView
 
 import com.intellij.openapi.util.IconLoader
-import data.DataWrapper
-import ui.DataViewPanel
+import org.jetbrains.dataVis.data.DataWrapper
+import org.jetbrains.dataVis.ui.DataViewPanel
 import javax.swing.*
 
 class TableView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {

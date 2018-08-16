@@ -1,4 +1,4 @@
-package ui
+package org.jetbrains.dataVis.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
@@ -14,8 +14,8 @@ import com.intellij.ui.components.JBList
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.layout.panel
 import com.intellij.ui.tabs.TabInfo
-import data.DataProvider
-import data.DataWrapper
+import org.jetbrains.dataVis.data.DataProvider
+import org.jetbrains.dataVis.data.DataWrapper
 
 import javax.swing.*
 import java.awt.*

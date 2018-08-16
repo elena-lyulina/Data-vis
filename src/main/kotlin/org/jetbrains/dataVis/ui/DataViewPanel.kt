@@ -1,12 +1,12 @@
-package ui
+package org.jetbrains.dataVis.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
 import com.intellij.ui.tabs.TabInfo
-import data.DataWrapper
-import dataView.*
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
+import org.jetbrains.dataVis.data.DataWrapper
+import org.jetbrains.dataVis.dataView.*
 
 import javax.swing.*
 import java.awt.*

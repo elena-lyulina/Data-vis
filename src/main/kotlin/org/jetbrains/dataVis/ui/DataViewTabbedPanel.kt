@@ -1,4 +1,4 @@
-package ui
+package org.jetbrains.dataVis.ui
 
 import com.intellij.execution.ui.layout.impl.JBRunnerTabs
 import com.intellij.icons.AllIcons
@@ -12,7 +12,7 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.tabs.TabInfo
 import com.intellij.ui.tabs.impl.JBEditorTabs
-import dataView.AbstractView
+import org.jetbrains.dataVis.dataView.AbstractView
 import javax.swing.Icon
 import javax.swing.ImageIcon
 import javax.swing.JPanel

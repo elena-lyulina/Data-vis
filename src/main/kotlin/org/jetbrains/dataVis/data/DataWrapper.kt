@@ -1,10 +1,10 @@
-package data
+package org.jetbrains.dataVis.data
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.vfs.VirtualFile
 import com.opencsv.CSVReader
 import org.apache.commons.lang.StringUtils
-import ui.DataToolWindowFactory
+import org.jetbrains.dataVis.ui.DataToolWindowFactory
 import java.io.*
 import java.util.*
 import java.util.stream.IntStream

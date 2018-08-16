@@ -1,4 +1,4 @@
-package ui
+package org.jetbrains.dataVis.ui
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
