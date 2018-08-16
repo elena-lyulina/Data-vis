@@ -1,11 +1,11 @@
-package org.jetbrains.dataVis.dataView
+package org.intellij.dataVis.dataView
 
 import com.intellij.openapi.util.IconLoader
-import org.jetbrains.dataVis.data.DataWrapper
-import org.jetbrains.dataVis.ui.DataViewPanel
+import org.intellij.dataVis.data.DataWrapper
+import org.intellij.dataVis.ui.DataViewPanel
 import javax.swing.*
 
-class TableView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class TableView(val file: org.intellij.dataVis.data.DataWrapper, parentPanel : DataViewPanel) : org.intellij.dataVis.dataView.AbstractView(file, parentPanel) {
 
     override val DATA_VIEW_ID = "Table"
     private val IMAGE_PATH = "/icons/table.png"

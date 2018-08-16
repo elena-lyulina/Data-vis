@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.ui
+package org.intellij.dataVis.ui
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
@@ -8,11 +8,11 @@ import com.intellij.openapi.wm.ToolWindowFactory
 class DataToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        DataVariablesPanel.getInstance(project).init(toolWindow)
+        org.intellij.dataVis.ui.DataVariablesPanel.Companion.getInstance(project).init(toolWindow)
     }
 
     companion object {
-        private val LOG = Logger.getInstance(DataToolWindowFactory::class.java)
+        private val LOG = Logger.getInstance(org.intellij.dataVis.ui.DataToolWindowFactory::class.java)
     }
 
 }

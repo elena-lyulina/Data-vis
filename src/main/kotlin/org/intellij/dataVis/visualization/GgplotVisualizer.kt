@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.visualization
+package org.intellij.dataVis.visualization
 
 import com.intellij.util.lang.UrlClassLoader
 import jetbrains.datalore.base.geometry.DoubleVector
@@ -17,7 +17,7 @@ import kotlin.reflect.full.createInstance
 class GgplotVisualizer private constructor() : Visualizer() {
 
     private val GG_LIB_NAME = "gog-awt_deploy_woj.jar"
-    private val GGPLOT_NAME = "visualization.ggplotLib"
+    private val GGPLOT_NAME = "org.intellij.dataVis.visualization.ggplotLib"
 
     private val SETTINGS_CLASS_NAME = "settings.Settings"
 
@@ -135,19 +135,19 @@ class ggplotLib : Visualizer() {
     override fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicLineChart(xData, yData))
-        SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
+        org.intellij.dataVis.visualization.SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
     }
 
     override fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicScatterChart(xData, yData))
-        SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
+        org.intellij.dataVis.visualization.SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
     }
 
     override fun drawBarChart(title: String, panel: JPanel, data: List<*>) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicBarChart(data, title))
-        SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
+        org.intellij.dataVis.visualization.SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
     }
 
     private fun lineChartData(xData: List<Double>, yData: List<Double>) : Map<String, List<Double>> {

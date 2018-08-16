@@ -1,10 +1,10 @@
-package org.jetbrains.dataVis.visualization
+package org.intellij.dataVis.visualization
 
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI.scale
-import org.jetbrains.dataVis.data.DataWrapper
+import org.intellij.dataVis.data.DataWrapper
 import java.awt.*
 import javax.swing.BoxLayout
 import javax.swing.JPanel
@@ -21,7 +21,7 @@ abstract class Visualizer {
     abstract fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>)
 
 
-    fun drawTable(dataFile: DataWrapper, plotPanel: JPanel) {
+    fun drawTable(dataFile: org.intellij.dataVis.data.DataWrapper, plotPanel: JPanel) {
 
         plotPanel.layout = BoxLayout(plotPanel, BoxLayout.LINE_AXIS)
         if (dataFile.parsed) {

@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.data
+package org.intellij.dataVis.data
 
 import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.*
@@ -6,18 +6,18 @@ import javax.swing.*
 class DataProvider private constructor() {
     val supportedFileFormats = hashMapOf<String, Char>(Pair("csv", ','), Pair("tsv", '\t'))
 
-    private val dataVariables: HashMap<String, DataWrapper> = HashMap()
+    private val dataVariables: HashMap<String, org.intellij.dataVis.data.DataWrapper> = HashMap()
 
     // private val dataVariables: MutableList<DataWrapper>
-    private var modelToNotify: DefaultListModel<DataWrapper>? = null
+    private var modelToNotify: DefaultListModel<org.intellij.dataVis.data.DataWrapper>? = null
 
 
-    val data: List<DataWrapper>
-        get() = dataVariables.values as List<DataWrapper>
+    val data: List<org.intellij.dataVis.data.DataWrapper>
+        get() = dataVariables.values as List<org.intellij.dataVis.data.DataWrapper>
 
-    fun addData(id: String, name: String, data: String, separator: Char = ',') : DataWrapper {
+    fun addData(id: String, name: String, data: String, separator: Char = ',') : org.intellij.dataVis.data.DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
-            val wrapper = DataWrapper(data, name, separator)
+            val wrapper = org.intellij.dataVis.data.DataWrapper(data, name, separator)
             add(id, wrapper)
             return wrapper
         }
@@ -40,9 +40,9 @@ class DataProvider private constructor() {
         }
     }
 
-    fun addData(file: VirtualFile, separator: Char?) : DataWrapper {
+    fun addData(file: VirtualFile, separator: Char?) : org.intellij.dataVis.data.DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
-            val wrapper = DataWrapper(file, separator!!)
+            val wrapper = org.intellij.dataVis.data.DataWrapper(file, separator!!)
             add(file.hashCode().toString(), wrapper)
             return wrapper
         }
@@ -51,11 +51,11 @@ class DataProvider private constructor() {
         }
     }
 
-    internal fun setListModel(listModel: DefaultListModel<DataWrapper>) {
+    internal fun setListModel(listModel: DefaultListModel<org.intellij.dataVis.data.DataWrapper>) {
         modelToNotify = listModel
     }
 
-    private fun notifyModelAboutAdding(toAdd: DataWrapper) {
+    private fun notifyModelAboutAdding(toAdd: org.intellij.dataVis.data.DataWrapper) {
         modelToNotify!!.addElement(toAdd)
     }
 
@@ -63,11 +63,11 @@ class DataProvider private constructor() {
         modelToNotify!!.removeAllElements()
     }
 
-    private fun notifyModelAboutRemoving(toRemove: DataWrapper) {
+    private fun notifyModelAboutRemoving(toRemove: org.intellij.dataVis.data.DataWrapper) {
         modelToNotify!!.removeElement(toRemove)
     }
 
-    private fun add(id: String, data: DataWrapper) {
+    private fun add(id: String, data: org.intellij.dataVis.data.DataWrapper) {
         if (!isExist(id)) {
             dataVariables[id] = data
             notifyModelAboutAdding(data)
@@ -91,17 +91,17 @@ class DataProvider private constructor() {
     //todo : create singleton not as class but as object?
     companion object {
         @Volatile
-        private var myProvider: DataProvider? = null
+        private var myProvider: org.intellij.dataVis.data.DataProvider? = null
 
-        public val provider: DataProvider
+        public val provider: org.intellij.dataVis.data.DataProvider
             get() {
-                var provider = myProvider
+                var provider = org.intellij.dataVis.data.DataProvider.Companion.myProvider
                 if (provider == null) {
-                    synchronized(DataProvider::class.java) {
-                        provider = myProvider
+                    synchronized(org.intellij.dataVis.data.DataProvider::class.java) {
+                        provider = org.intellij.dataVis.data.DataProvider.Companion.myProvider
                         if (provider == null) {
-                            provider = DataProvider()
-                            myProvider = provider
+                            provider = org.intellij.dataVis.data.DataProvider()
+                            org.intellij.dataVis.data.DataProvider.Companion.myProvider = provider
                         }
                     }
                 }

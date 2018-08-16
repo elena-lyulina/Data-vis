@@ -1,10 +1,10 @@
-package org.jetbrains.dataVis.data
+package org.intellij.dataVis.data
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.vfs.VirtualFile
 import com.opencsv.CSVReader
 import org.apache.commons.lang.StringUtils
-import org.jetbrains.dataVis.ui.DataToolWindowFactory
+import org.intellij.dataVis.ui.DataToolWindowFactory
 import java.io.*
 import java.util.*
 import java.util.stream.IntStream
@@ -19,11 +19,11 @@ import java.util.stream.IntStream
 
 class DataWrapper (data: String, val name: String = "Name", val separator: Char = ',') {
     companion object {
-        private val LOG = Logger.getInstance(DataToolWindowFactory::class.java)
+        private val LOG = Logger.getInstance(org.intellij.dataVis.ui.DataToolWindowFactory::class.java)
     }
 
     lateinit var headers: MutableList<String>
-    lateinit var columns: MutableList<Column>
+    lateinit var columns: MutableList<org.intellij.dataVis.data.Column>
     var parsed: Boolean = false
     var virtualFile: VirtualFile? = null
 
@@ -37,7 +37,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
 
 
     private fun parseCSV(file: VirtualFile) : Boolean {
-        LOG.info("file type as string ${file.fileType.description}")
+        org.intellij.dataVis.data.DataWrapper.Companion.LOG.info("file type as string ${file.fileType.description}")
         return parseCSV(StringReader(String(file.contentsToByteArray())))
     }
 
@@ -62,7 +62,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
                 // to replace blank headers:
                 IntStream.range(0, headers.size).forEach { i: Int ->
                     if (StringUtils.isBlank(headers[i])) headers[i] = "column${i}"
-                    columns.add(Column(headers[i]))
+                    columns.add(org.intellij.dataVis.data.Column(headers[i]))
                 }
 
                 record = csvReader.readNext()
@@ -72,7 +72,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
             }
 
         } catch (e: Exception) {
-            LOG.warn("ParsingCSV Error")
+            org.intellij.dataVis.data.DataWrapper.Companion.LOG.warn("ParsingCSV Error")
             e.printStackTrace()
             return false
         } finally {
@@ -80,7 +80,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
                 reader.close()
                 csvReader?.close()
             } catch (e: IOException) {
-                LOG.warn("Closing fileReader/csvParser Error")
+                org.intellij.dataVis.data.DataWrapper.Companion.LOG.warn("Closing fileReader/csvParser Error")
                 e.printStackTrace()
                 return false
             }
@@ -96,7 +96,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
     private fun parseLine(line: Array<String>) : Boolean {
         if (line.size != columns.size) {
             // or add extra elements?
-            LOG.warn("Amount of columns has changed due CSV parsing")
+            org.intellij.dataVis.data.DataWrapper.Companion.LOG.warn("Amount of columns has changed due CSV parsing")
             return false
         }
 

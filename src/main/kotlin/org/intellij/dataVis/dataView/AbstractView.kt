@@ -1,10 +1,10 @@
-package org.jetbrains.dataVis.dataView
+package org.intellij.dataVis.dataView
 
-import org.jetbrains.dataVis.data.DataWrapper
-import org.jetbrains.dataVis.ui.DataViewPanel
-import org.jetbrains.dataVis.visualization.GgplotFactory
-import org.jetbrains.dataVis.visualization.VisFactory
-import org.jetbrains.dataVis.visualization.Visualizer
+import org.intellij.dataVis.data.DataWrapper
+import org.intellij.dataVis.ui.DataViewPanel
+import org.intellij.dataVis.visualization.GgplotFactory
+import org.intellij.dataVis.visualization.VisFactory
+import org.intellij.dataVis.visualization.Visualizer
 
 import javax.swing.*
 import java.awt.*
@@ -20,7 +20,7 @@ internal interface View {
     fun completeSettingsPanel()
 }
 
-abstract class AbstractView internal constructor(internal var dataFile: DataWrapper, val parentPanel: DataViewPanel) : View {
+abstract class AbstractView internal constructor(internal var dataFile: org.intellij.dataVis.data.DataWrapper, val parentPanel: DataViewPanel) : org.intellij.dataVis.dataView.View {
 
     var myViewPanel = JPanel()
     protected var mySettingsPanel = JPanel()

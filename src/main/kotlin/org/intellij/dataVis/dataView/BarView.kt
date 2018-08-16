@@ -1,16 +1,16 @@
-package org.jetbrains.dataVis.dataView
+package org.intellij.dataVis.dataView
 
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
-import org.jetbrains.dataVis.data.Column
-import org.jetbrains.dataVis.data.DataWrapper
-import org.jetbrains.dataVis.settings.ChartSettingsPanel
-import org.jetbrains.dataVis.settings.Settings
-import org.jetbrains.dataVis.ui.DataViewPanel
+import org.intellij.dataVis.data.Column
+import org.intellij.dataVis.data.DataWrapper
+import org.intellij.dataVis.settings.ChartSettingsPanel
+import org.intellij.dataVis.settings.Settings
+import org.intellij.dataVis.ui.DataViewPanel
 import java.awt.Color
 import javax.swing.*
 
-class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class BarView(val file: org.intellij.dataVis.data.DataWrapper, parentPanel : DataViewPanel) : org.intellij.dataVis.dataView.AbstractView(file, parentPanel) {
 
     override val DATA_VIEW_ID= "Bar chart"
     private val IMAGE_PATH = "/icons/barChart.png"
@@ -20,10 +20,10 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
 
     override val hasSettings = true
 
-    private val valueModel = DefaultComboBoxModel<Column>()
-    private val valueChooser = ComboBox<Column>(valueModel)
+    private val valueModel = DefaultComboBoxModel<org.intellij.dataVis.data.Column>()
+    private val valueChooser = ComboBox<org.intellij.dataVis.data.Column>(valueModel)
 
-    val settings = Settings(this)
+    val settings = org.intellij.dataVis.settings.Settings(this)
     val dataSettingsPanel = JPanel()
 
     init {
