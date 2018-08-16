@@ -1,55 +1,75 @@
 package visualization
 
 import com.intellij.ui.ScrollPaneFactory
+import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
-import dataView.DataTableModel
+import com.intellij.util.ui.JBUI.scale
 import data.DataWrapper
-import java.awt.Component
+import java.awt.*
+import javax.swing.BoxLayout
 import javax.swing.JPanel
 import javax.swing.JTable
-import javax.swing.table.TableCellRenderer
+import javax.swing.ScrollPaneConstants
+import javax.swing.border.Border
+import javax.swing.table.*
 
 
 abstract class Visualizer {
 
-//    fun drawChart(chartViewId: String?) {
-//        when(chartViewId) {
-//            "Table" -> drawTable()
-//            "Bar chart" -> drawBarChart()
-//            "Scatter chart" -> drawScatterChart()
-//            "Line chart" -> drawLineChart()
-//        }
-//    }
-
-    abstract fun drawBarChart(panel: JPanel, data: List<*>)
+    abstract fun drawBarChart(title: String, panel: JPanel, data: List<*>)
     abstract fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>)
     abstract fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>)
 
+
     fun drawTable(dataFile: DataWrapper, plotPanel: JPanel) {
+
+        plotPanel.layout = BoxLayout(plotPanel, BoxLayout.LINE_AXIS)
         if (dataFile.parsed) {
             val model = DataTableModel(dataFile.headers, dataFile.columns)
-            // todo: headers
-            val table = object : JBTable(model) {
-                override fun prepareRenderer(renderer: TableCellRenderer, row: Int, column: Int): Component {
-                    val component = super.prepareRenderer(renderer, row, column)
-                    val rendererWidth = component.preferredSize.width
-                    val tableColumn = getColumnModel().getColumn(column)
-
-                    tableColumn.preferredWidth = Math.max(rendererWidth + intercellSpacing.width, tableColumn.preferredWidth)
-                    return component
-                }
-            }
-
-
+            val table = MyTable(model)
             table.autoResizeMode = JTable.AUTO_RESIZE_OFF
-            //table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-            //JBScrollPane pane = new JBScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS );
-            //myPanel.add(pane);
-            table.fillsViewportHeight = true
-            plotPanel.add(ScrollPaneFactory.createScrollPane(table))
-            //myPlotPanel.add(ScrollPaneFactory.createScrollPane(table))
+            table.setMaxItemsForSizeCalculation(100)
+            table.fillsViewportHeight = false
+
+
+//            val numOfVisibleRows = 3
+//            val cols = table.columnModel.totalColumnWidth
+//            val rows = table.rowHeight * numOfVisibleRows
+//            val d = Dimension(cols, rows)
+//            table.preferredScrollableViewportSize = d
+
+
+            val scrollPane = JBScrollPane(table)
+//            scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER,
+//                    table)
+
+            plotPanel.add(scrollPane)
+
+
+           // plotPanel.add(ScrollPaneFactory.createScrollPane(table), c)
         }
 
     }
+
+    inner class MyTable(model : TableModel) : JBTable(model) {
+        override fun prepareRenderer(renderer: TableCellRenderer, row: Int, column: Int): Component {
+            val component = super.prepareRenderer(renderer, row, column)
+            updateColumnWidth(column, component.preferredSize.width, this)
+            return component
+        }
+
+        private fun updateColumnWidth(column: Int, width: Int, table: JTable): Int {
+            val tableColumn = table.columnModel.getColumn(column)
+            val headerWidth = DefaultTableCellRenderer().getTableCellRendererComponent(table, tableColumn.headerValue, false, false, -1, column).preferredSize.width + scale(4)
+            val newWidth = Math.max(width, headerWidth) + 2 * table.intercellSpacing.width
+            tableColumn.preferredWidth = Math.max(newWidth, tableColumn.preferredWidth)
+            return newWidth
+        }
+    }
+
+
+
+
+
 }
 

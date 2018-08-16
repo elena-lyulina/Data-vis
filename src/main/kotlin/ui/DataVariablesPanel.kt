@@ -12,6 +12,8 @@ import com.intellij.ui.ColoredListCellRenderer
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBList
 import com.intellij.ui.content.ContentFactory
+import com.intellij.ui.layout.panel
+import com.intellij.ui.tabs.TabInfo
 import data.DataProvider
 import data.DataWrapper
 
@@ -25,13 +27,11 @@ import java.awt.event.MouseEvent
 class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()) {
     private val dataVarList: JBList<DataWrapper>
     private val myListModel: DefaultListModel<DataWrapper>
-    private val myPlotPanel: DataViewTabbedPanel
-    private val provider: DataProvider
+    private val myPlotPanel: DataViewTabbedPanel = DataViewTabbedPanel.getInstance(myProject)
+    private val provider: DataProvider = DataProvider.provider
 
 
     init {
-        provider = DataProvider.provider
-        myPlotPanel = DataViewTabbedPanel.getInstance(myProject)
         this.add(createToolbar().component, BorderLayout.WEST)
         myListModel = DefaultListModel()
         provider.setListModel(myListModel)
@@ -62,18 +62,6 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         return ActionManager.getInstance().createActionToolbar("Data variables panel", toolbarGroup, false)
     }
 
-    //    private class MyListModel extends AbstractListModel<DataWrapper> {
-    //        DataProvider provider = DataProvider.getProvider();
-    //        @Override
-    //        public int getSize() {
-    //            return provider.getData().size();
-    //        }
-    //
-    //        @Override
-    //        public DataWrapper getElementAt(int i) {
-    //            return provider.getData().get(i);
-    //        }
-    //    }
 
 
     private inner class LoadDataAction internal constructor() : AnAction("Load data", "Load data", AllIcons.Actions.Download) {
@@ -96,14 +84,21 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
 
 
     private fun selectVariable() {
-        val selected = dataVarList.selectedValue
-        myPlotPanel.addTab(selected.name, DataViewPanel(selected))
-        val size = myPlotPanel.tabCount
-        myPlotPanel.selectedIndex = size - 1
-
-        LOG.info("${selected.name} selected")
+        if(dataVarList.selectedValue != null) {
+            val selected = dataVarList.selectedValue
+            val panelToAdd = if (selected.parsed) DataViewPanel(selected, myPlotPanel) else DataNotParsedPanel()
+            myPlotPanel.addTab(selected.name, panelToAdd, selected.parsed)
+            LOG.info("${selected.name} selected")
+        }
     }
 
+    private inner class DataNotParsedPanel : JPanel() {
+        val MESSAGE = "Sorry, but that file can't be parsed"
+
+        init {
+            add(JLabel(MESSAGE))
+        }
+    }
 
     private inner class EnterPressingListener : KeyAdapter() {
 

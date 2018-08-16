@@ -7,6 +7,6 @@ import com.intellij.openapi.wm.ToolWindowFactory
 class DataViewToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        DataViewTabbedPanel.getInstance(project).init(toolWindow)
+        DataViewTabbedPanel.getInstance(project).init(toolWindow, project)
     }
 }
