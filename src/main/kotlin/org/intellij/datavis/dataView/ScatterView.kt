@@ -5,7 +5,6 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
-import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
