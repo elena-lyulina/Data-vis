@@ -13,6 +13,6 @@ class Data2visFactory : VisFactory {
 
 class GgplotFactory (): VisFactory {
     override fun createVisualizer() : Visualizer {
-        return GgplotVisualizer()
+        return GgplotVisualizer.visualizer
     }
 }

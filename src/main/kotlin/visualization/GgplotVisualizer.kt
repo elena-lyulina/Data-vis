@@ -1,6 +1,7 @@
 package visualization
 
 import com.intellij.util.lang.UrlClassLoader
+import settings.Settings
 import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest
 import java.io.File
@@ -14,13 +15,35 @@ import kotlin.collections.ArrayList
 import kotlin.reflect.full.createInstance
 
 
-class GgplotVisualizer : Visualizer() {
+class GgplotVisualizer private constructor() : Visualizer() {
 
     private val GG_LIB_NAME = "gog-awt_deploy_woj.jar"
     private val GGPLOT_NAME = "visualization.ggplotLib"
 
+    private val SETTINGS_CLASS_NAME = "settings.Settings"
+
     private var ggplotLib: Any
     private lateinit var myClassLoader: URLClassLoader
+
+    companion object {
+        @Volatile
+        private var myVisualizer: GgplotVisualizer? = null
+
+        internal val visualizer: GgplotVisualizer
+            get() {
+                var visualizer = myVisualizer
+                if (visualizer == null) {
+                    synchronized(GgplotVisualizer::class.java) {
+                        visualizer = myVisualizer
+                        if (visualizer == null) {
+                            visualizer = GgplotVisualizer()
+                            myVisualizer = visualizer
+                        }
+                    }
+                }
+                return visualizer!!
+            }
+    }
 
 
     init {
@@ -32,6 +55,9 @@ class GgplotVisualizer : Visualizer() {
         val urls = loader.urls.filter{ url -> url.file.contains(GG_LIB_NAME)} as MutableList
         val clazz = loader.loadClass(GGPLOT_NAME)
         urls.addAll(findContainingJar(clazz, loader))
+
+//        clazz = loader.loadClass(SETTINGS_CLASS_NAME)
+//        urls.addAll(findContainingJar(clazz, loader))
 
         myClassLoader = MyClassLoader(urls.toTypedArray(), loader)
 
@@ -89,9 +115,9 @@ class GgplotVisualizer : Visualizer() {
         val drawBarMethod = ggplotLib.javaClass.getMethod("drawLineChart", JPanel::class.java, List::class.java, List::class.java)
         drawBarMethod.invoke(ggplotLib, panel, xData, yData)    }
 
-    override fun drawBarChart(panel: JPanel, data: List<*>) {
-        val drawBarMethod = ggplotLib.javaClass.getMethod("drawBarChart", JPanel::class.java, List::class.java)
-        drawBarMethod.invoke(ggplotLib, panel, data)
+    override fun drawBarChart(title: String, panel: JPanel, data: List<*>) {
+        val drawBarMethod = ggplotLib.javaClass.getMethod("drawBarChart", String::class.java, JPanel::class.java, List::class.java)
+        drawBarMethod.invoke(ggplotLib, title, panel, data)
 
     }
 
@@ -118,9 +144,9 @@ class ggplotLib : Visualizer() {
         SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
     }
 
-    override fun drawBarChart(panel: JPanel, data: List<*>) {
+    override fun drawBarChart(title: String, panel: JPanel, data: List<*>) {
         panel.removeAll()
-        val plotSpecList = Arrays.asList<Map<String, Any>>(basicBarChart(data))
+        val plotSpecList = Arrays.asList<Map<String, Any>>(basicBarChart(data, title))
         SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
     }
 
@@ -146,60 +172,90 @@ class ggplotLib : Visualizer() {
         return map
     }
 
+
+    private val xMapping =
+            " 'mapping':   " +
+            "     {        " +
+            "      'x': 'x'" +
+            "     }        "
+
+
+
+    private val xyMapping =
+            " 'mapping':    " +
+            "     {         " +
+            "      'x': 'x'," +
+            "      'y': 'y' " +
+            "     }         "
+
+
+    private fun pointGeom(color: String = "#4382b7") : String {
+        return  "  {                                " +
+                "     'geom':  {                    " +
+                "         'name': 'point',          " +
+                "         'colour': '" + color + "'," +
+                "         'size': 5                 " +
+                "               }                   " +
+                "  }                                "
+    }
+
+    private fun lineGeom(color: String = "#a7ceef") : String {
+        return  " {                                 " +
+                "      'geom':  {                   " +
+                "         'name': 'line',           " +
+                "         'size': 2,                " +
+                "         'colour': '" + color + "'," +
+                        xyMapping +
+                "                }                  " +
+                "  }                                "
+    }
+
+    private fun barGeom(color: String = "#a7ceef") : String {
+        return  " {                                 " +
+                "      'geom':  {                   " +
+                "         'name': 'bar',            " +
+                "         'fill': '" + color + "'   " +
+                "                }                  " +
+                "  }                                "
+    }
+
     private fun title(s: String): String {
-        return "   'ggtitle': {" +
-                "                 'text': '" + s + "'" +
-                "              }" +
-                ""
+        return  "   'ggtitle': {         " +
+                "     'text': '" + s + "'" +
+                "              }         "
     }
 
-    private fun layerMapping(): String {
-        return "   'mapping': {" +
-                "             'x': 'x'," +
-                "             'y': 'y'" +
-                "           }," +
-                "   'layers': [" +
-                "               {" +
-                "                  'geom':  {" +
-                "                             'name': 'point'," +
-                "                             'colour': '#4382b7'," +
-                "                             'size': 5" +
-                "                           }" +
-                "               }" +
-                "           ]" +
-                ""
 
-    }
+//    private fun layerMapping(): String {
+//        return "   'mapping': {" +
+//                "             'x': 'x'," +
+//                "             'y': 'y'" +
+//                "           }," +
+//                "   'layers': [" +
+//                "               {" +
+//                "                  'geom':  {" +
+//                "                             'name': 'point'," +
+//                "                             'colour': '#4382b7'," +
+//                "                             'size': 5" +
+//                "                           }" +
+//                "               }" +
+//                "           ]" +
+//                ""
+//
+//    }
 
-    fun basicLineChart(xData: List<Double>, yData: List<Double>) : Map<String, Any> {
-       val mapping = "{" +
-                "   'mapping': {" +
-                "             'x': 'x'," +
-                "             'y': 'y'" +
-                "           }," +
-                "   'layers': [" +
-                "               {" +
-                "                  'geom':  {" +
-                "                              'name': 'line'," +
-                "                              'size': 2," +
-                "                               'colour': '#a7ceef'," +
-                "                               'mapping': {"  +
-                "                                          'x': 'x'," +
-                "                                          'y': 'y'" +
-                "                                        }" +
-                "                           }" +
-                "               },{  " +
-                "                  'geom':  {" +
-                "                                        'name': 'point'," +
-                "                                        'size': 5," +
-                "                                        'colour': '#4382b7'" +
-                "                                      }" +
-                "                 }" +
-                "           ]" +
-                "        }" +
-                ""
+    private fun basicLineChart(xData: List<Double>, yData: List<Double>) : Map<String, Any> {
+       val spec =
+               "{                    " +
+                    xyMapping +    "," +
+               "   'layers': [       " +
+                      lineGeom() + "," +
+                      pointGeom()      +
+               "             ]       " +
+               "}                    "
 
-        val plotSpec = HashMap(DemoAndTest.parseJson(mapping))
+
+        val plotSpec = HashMap(DemoAndTest.parseJson(spec))
         plotSpec["data"] = lineChartData(xData, yData)
         return plotSpec
 
@@ -207,33 +263,32 @@ class ggplotLib : Visualizer() {
 
 
     fun basicScatterChart(xData: List<Double>, yData: List<Double>): Map<String, Any> {
-        val spec = "{" +
-                layerMapping() +
-                "," +
-                title("Default") +
-                "}"
+        val spec =
+                "{                    " +
+                     xyMapping +    "," +
+                "   'layers': [       " +
+                       pointGeom()      +
+                "             ]       " +
+                "}                    "
+
+
 
         val plotSpec = HashMap(DemoAndTest.parseJson(spec))
         plotSpec["data"] = scatterChartData(xData, yData)
         return plotSpec
     }
 
-    protected fun basicBarChart(data: List<*>): Map<String, Any> {
-        val spec = "{" +
-                "   'mapping': {" +
-                "             'x': 'x'" +
-                "           }," +
+    protected fun basicBarChart(data: List<*>, title: String): Map<String, Any> {
 
-                "   'layers': [" +
-                "               {" +
-                "                  'geom':  {" +
-                "                             'name': 'bar'," +
-                "                             'fill': '#a7ceef'" +
-//                "                             'colour': 'black'"
-                "                           }" +
-                "               }" +
-                "           ]" +
-                "}"
+        val spec =
+                "{                    " +
+                     xMapping +     "," +
+                "   'layers': [       " +
+                       barGeom()        +
+                "             ],      " +
+                     title(title)       +
+                "}                    "
+
 
         val plotSpec = HashMap(DemoAndTest.parseJson(spec))
         plotSpec["data"] = barChartData(data)

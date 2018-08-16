@@ -12,6 +12,11 @@ kotlin {
     }
 }
 
+intellij {
+    type = 'IU'
+    plugins += 'DatabaseTools'
+}
+
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -31,16 +36,16 @@ dependencies {
     compile "io.data2viz:d2v-shape-jvm:0.6.0"
     compile "io.data2viz:d2v-chord-jvm:0.6.0"
 
-   // compile group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.7'
+    // compile group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.7'
     // compile group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.7'
     // !!!!! it works only with 1.7 version
     // compile group: 'org.apache.xmlgraphics', name: 'batik-svg-dom', version: '1.7'
 
 
     compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
-   // compile files("lib/gog-awt_deploy-src_WO_j_b.jar", "lib/gog-awt_deploy_WO_j_b.jar")
+    // compile files("lib/gog-awt_deploy-src_WO_j_b.jar", "lib/gog-awt_deploy_WO_j_b.jar")
     // libraries with org.apache.batik:
-    compile files("lib/gog-awt_deploy_woj.jar", "lib/Foo.jar")
+    compile files("lib/gog-awt_deploy_woj.jar")
     testCompile (group: 'junit', name: 'junit', version: '4.12') {
         //exclude group: 'org.hamcrest', module:'hamcrest-core'
 
