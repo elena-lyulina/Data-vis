@@ -6,8 +6,8 @@ import com.intellij.openapi.util.IconLoader
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.ui.DataViewPanel
-import javax.swing.DefaultComboBoxModel
-import javax.swing.Icon
+import javax.swing.*
+import javax.swing.ImageIcon
 
 
 class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {

@@ -8,6 +8,7 @@ import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.ui.DataViewPanel
 import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
+import javax.swing.ImageIcon
 
 class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
 
