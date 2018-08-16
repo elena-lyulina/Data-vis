@@ -1,10 +1,10 @@
-package data
+package org.jetbrains.dataVis.data
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.File
 
-class dataWrapperTest {
+class DataWrapperTest {
 
     // dont know, can OpenCSV parse TSV?
     @Test
@@ -83,7 +83,7 @@ class dataWrapperTest {
     }
 
 
-    fun getWrapperFromFilePath(path: String, separator: Char = ',') : DataWrapper {
+    private fun getWrapperFromFilePath(path: String, separator: Char = ',') : DataWrapper {
         val classLoader = javaClass.classLoader
         val file = File(classLoader.getResource(path)!!.file)
         val data = String(file.readBytes())

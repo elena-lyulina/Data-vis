@@ -1,4 +1,4 @@
-package settings
+package org.jetbrains.dataVis.settings
 
 import java.awt.BorderLayout
 import java.awt.Color
@@ -40,7 +40,7 @@ class TitleOption(val myX : Int,
                   val myY : Int,
                   val myWidth: Int,
                   val myHeight: Int,
-                  val mySettings: Settings )
+                  val mySettings: Settings)
     : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Title"
@@ -77,7 +77,7 @@ class AxisOption(val myX : Int,
                  val myY : Int,
                  val myWidth: Int,
                  val myHeight: Int,
-                 val mySettings: Settings )
+                 val mySettings: Settings)
     : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Axis"
@@ -99,7 +99,7 @@ class LegendOption(val myX : Int,
                    val myY : Int,
                    val myWidth: Int,
                    val myHeight: Int,
-                   val mySettings: Settings )
+                   val mySettings: Settings)
     : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Legend"
@@ -121,7 +121,7 @@ class ColorsOption(val myX : Int,
                    val myY : Int,
                    val myWidth: Int,
                    val myHeight: Int,
-                   val mySettings: Settings )
+                   val mySettings: Settings)
     : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Colors"

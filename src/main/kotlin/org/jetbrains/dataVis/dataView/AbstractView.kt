@@ -1,10 +1,10 @@
-package dataView
+package org.jetbrains.dataVis.dataView
 
-import data.DataWrapper
-import ui.DataViewPanel
-import visualization.GgplotFactory
-import visualization.VisFactory
-import visualization.Visualizer
+import org.jetbrains.dataVis.data.DataWrapper
+import org.jetbrains.dataVis.ui.DataViewPanel
+import org.jetbrains.dataVis.visualization.GgplotFactory
+import org.jetbrains.dataVis.visualization.VisFactory
+import org.jetbrains.dataVis.visualization.Visualizer
 
 import javax.swing.*
 import java.awt.*

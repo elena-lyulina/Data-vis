@@ -1,4 +1,4 @@
-package settings
+package org.jetbrains.dataVis.settings
 
 import java.awt.*
 import java.awt.event.MouseAdapter

@@ -1,12 +1,12 @@
-package dataView
+package org.jetbrains.dataVis.dataView
 
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
-import data.Column
-import data.DataWrapper
-import settings.ChartSettingsPanel
-import settings.Settings
-import ui.DataViewPanel
+import org.jetbrains.dataVis.data.Column
+import org.jetbrains.dataVis.data.DataWrapper
+import org.jetbrains.dataVis.settings.ChartSettingsPanel
+import org.jetbrains.dataVis.settings.Settings
+import org.jetbrains.dataVis.ui.DataViewPanel
 import java.awt.Color
 import javax.swing.*
 

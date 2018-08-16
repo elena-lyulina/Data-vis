@@ -17,11 +17,11 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <toolWindow id="Data Variables" secondary="true" anchor="bottom"
-                    factoryClass="ui.DataToolWindowFactory"/>
+                    factoryClass="org.jetbrains.dataVis.ui.DataToolWindowFactory"/>
         <toolWindow id="Data vis" secondary="true" anchor="right"
-                    factoryClass="ui.DataViewToolWindowFactory"/>
-        <projectService serviceInterface="ui.DataVariablesPanel" serviceImplementation="ui.DataVariablesPanel"/>
-        <projectService serviceInterface="ui.DataViewTabbedPanel" serviceImplementation="ui.DataViewTabbedPanel"/>
+                    factoryClass="org.jetbrains.dataVis.ui.DataViewToolWindowFactory"/>
+        <projectService serviceInterface="org.jetbrains.dataVis.ui.DataVariablesPanel" serviceImplementation="org.jetbrains.dataVis.ui.DataVariablesPanel"/>
+        <projectService serviceInterface="org.jetbrains.dataVis.ui.DataViewTabbedPanel" serviceImplementation="org.jetbrains.dataVis.ui.DataViewTabbedPanel"/>
 
 
 

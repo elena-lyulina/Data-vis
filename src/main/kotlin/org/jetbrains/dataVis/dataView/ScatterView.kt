@@ -1,27 +1,28 @@
-package dataView
+package org.jetbrains.dataVis.dataView
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
-import data.Column
-import data.DataWrapper
-import settings.Settings
-import ui.DataViewPanel
-import javax.swing.*
+import org.jetbrains.dataVis.data.Column
+import org.jetbrains.dataVis.data.DataWrapper
+import org.jetbrains.dataVis.settings.Settings
+import org.jetbrains.dataVis.ui.DataViewPanel
+import javax.swing.DefaultComboBoxModel
+import javax.swing.Icon
 import javax.swing.ImageIcon
 
-
-class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
 
     companion object {
-        private val LOG = Logger.getInstance(LineView::class.java)
+        private val LOG = Logger.getInstance(ScatterView::class.java)
     }
 
-    override val DATA_VIEW_ID = "Line chart"
-    private val IMAGE_PATH = "/icons/lineChart.png"
+    override val DATA_VIEW_ID = "Scatter chart"
+    private val IMAGE_PATH = "/icons/scatterChart.png"
     override val actionIcon: Icon = IconLoader.getIcon(IMAGE_PATH)
 
-    // override val actionIcon: ImageIcon = ImageIcon(javaClass.getResource(IMAGE_PATH))
+
+    //override val actionIcon: ImageIcon = ImageIcon(javaClass.getResource(IMAGE_PATH))
 
     override val hasSettings = true
 
@@ -37,11 +38,11 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
     init {
         completeSettingsPanel()
         updatePlotPanel()
+
     }
 
-
-    // todo: if there is no double values
     override fun completeSettingsPanel() {
+
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }
         yChooser.addActionListener { updatePlotPanel() }
@@ -53,16 +54,17 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
     }
 
     override fun updatePlotPanel() {
-        if(xModel.size > 0 && yModel.size > 0) {
-            LOG.info("Line chart is drawing")
+        if (xModel.size > 0 && yModel.size > 0) {
+            LOG.info("Scatter chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
-            myVisualizer.drawLineChart(myPlotPanel, xData, yData)
+            myVisualizer.drawScatterChart(myPlotPanel, xData, yData)
             myViewPanel.repaint()
             parentPanel.update()
+
         }
         else {
-            LOG.info("No available data for line chart ")
+            LOG.info("No available data for scatter chart")
         }
     }
 

@@ -1,7 +1,7 @@
-package visualization
+package org.jetbrains.dataVis.visualization
 
 import com.intellij.openapi.diagnostic.Logger
-import data.Column
+import org.jetbrains.dataVis.data.Column
 
 
 import javax.swing.event.TableModelListener

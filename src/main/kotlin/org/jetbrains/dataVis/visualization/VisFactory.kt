@@ -1,4 +1,4 @@
-package visualization
+package org.jetbrains.dataVis.visualization
 
 interface VisFactory {
     fun createVisualizer() : Visualizer

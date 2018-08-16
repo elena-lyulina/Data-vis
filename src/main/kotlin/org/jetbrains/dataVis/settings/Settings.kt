@@ -1,6 +1,6 @@
-package settings
+package org.jetbrains.dataVis.settings
 
-import dataView.AbstractView
+import org.jetbrains.dataVis.dataView.AbstractView
 
 class Settings (val dataView: AbstractView) {
     var TITLE: String = ""

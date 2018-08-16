@@ -1,7 +1,6 @@
-package visualization
+package org.jetbrains.dataVis.visualization
 
 import com.intellij.util.lang.UrlClassLoader
-import settings.Settings
 import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest
 import java.io.File
@@ -136,7 +135,8 @@ class ggplotLib : Visualizer() {
     override fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicLineChart(xData, yData))
-        SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)    }
+        SwingDemoUtil.show(VIEW_SIZE, plotSpecList, panel)
+    }
 
     override fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>) {
         panel.removeAll()

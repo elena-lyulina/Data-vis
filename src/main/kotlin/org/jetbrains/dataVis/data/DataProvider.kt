@@ -1,4 +1,4 @@
-package data
+package org.jetbrains.dataVis.data
 
 import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.*
@@ -93,7 +93,7 @@ class DataProvider private constructor() {
         @Volatile
         private var myProvider: DataProvider? = null
 
-        internal val provider: DataProvider
+        public val provider: DataProvider
             get() {
                 var provider = myProvider
                 if (provider == null) {

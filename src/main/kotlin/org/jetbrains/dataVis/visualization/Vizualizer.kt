@@ -1,10 +1,10 @@
-package visualization
+package org.jetbrains.dataVis.visualization
 
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI.scale
-import data.DataWrapper
+import org.jetbrains.dataVis.data.DataWrapper
 import java.awt.*
 import javax.swing.BoxLayout
 import javax.swing.JPanel
