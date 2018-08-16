@@ -1,13 +1,13 @@
-package org.jetbrains.dataVis.visualization
+package org.intellij.dataVis.visualization
 
 import com.intellij.openapi.diagnostic.Logger
-import org.jetbrains.dataVis.data.Column
+import org.intellij.dataVis.data.Column
 
 
 import javax.swing.event.TableModelListener
 import javax.swing.table.AbstractTableModel
 
-class DataTableModel (private val myHeaders: List<String>, private val myColumns: List<Column>) : AbstractTableModel() {
+class DataTableModel (private val myHeaders: List<String>, private val myColumns: List<org.intellij.dataVis.data.Column>) : AbstractTableModel() {
 
 //    /** takes at most [DEFAULT_COLUMN_NUMBER] of columns and at most [DEFAULT_ROW_NUMBER] of rows */
 //    var myHeaders = header.subList(0, minOf(DEFAULT_COLUMN_NUMBER, header.size))

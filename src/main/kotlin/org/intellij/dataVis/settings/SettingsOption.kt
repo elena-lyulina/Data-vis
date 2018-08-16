@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.settings
+package org.intellij.dataVis.settings
 
 import java.awt.BorderLayout
 import java.awt.Color
@@ -14,7 +14,7 @@ interface Option {
     fun completeSettingsPanel()
 }
 
-abstract class AbstractOption(val xCoord: Int, val yCoord: Int, panelWidth: Int, panelHeight: Int, settings: Settings) : Option {
+abstract class AbstractOption(val xCoord: Int, val yCoord: Int, panelWidth: Int, panelHeight: Int, settings: org.intellij.dataVis.settings.Settings) : org.intellij.dataVis.settings.Option {
     val color = Color.GRAY
     val size = 30
 
@@ -40,8 +40,8 @@ class TitleOption(val myX : Int,
                   val myY : Int,
                   val myWidth: Int,
                   val myHeight: Int,
-                  val mySettings: Settings)
-    : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
+                  val mySettings: org.intellij.dataVis.settings.Settings)
+    : org.intellij.dataVis.settings.AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Title"
     private val label = JLabel(title)
@@ -77,8 +77,8 @@ class AxisOption(val myX : Int,
                  val myY : Int,
                  val myWidth: Int,
                  val myHeight: Int,
-                 val mySettings: Settings)
-    : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
+                 val mySettings: org.intellij.dataVis.settings.Settings)
+    : org.intellij.dataVis.settings.AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Axis"
     val label = JLabel(title)
@@ -99,8 +99,8 @@ class LegendOption(val myX : Int,
                    val myY : Int,
                    val myWidth: Int,
                    val myHeight: Int,
-                   val mySettings: Settings)
-    : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
+                   val mySettings: org.intellij.dataVis.settings.Settings)
+    : org.intellij.dataVis.settings.AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Legend"
     val label = JLabel(title)
@@ -121,8 +121,8 @@ class ColorsOption(val myX : Int,
                    val myY : Int,
                    val myWidth: Int,
                    val myHeight: Int,
-                   val mySettings: Settings)
-    : AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
+                   val mySettings: org.intellij.dataVis.settings.Settings)
+    : org.intellij.dataVis.settings.AbstractOption(myX, myY, myWidth, myHeight, mySettings) {
 
     override val title: String = "Colors"
     val label = JLabel(title)

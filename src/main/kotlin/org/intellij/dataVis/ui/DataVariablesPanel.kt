@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.ui
+package org.intellij.dataVis.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
@@ -14,8 +14,8 @@ import com.intellij.ui.components.JBList
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.layout.panel
 import com.intellij.ui.tabs.TabInfo
-import org.jetbrains.dataVis.data.DataProvider
-import org.jetbrains.dataVis.data.DataWrapper
+import org.intellij.dataVis.data.DataProvider
+import org.intellij.dataVis.data.DataWrapper
 
 import javax.swing.*
 import java.awt.*
@@ -25,10 +25,10 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 
 class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()) {
-    private val dataVarList: JBList<DataWrapper>
-    private val myListModel: DefaultListModel<DataWrapper>
+    private val dataVarList: JBList<org.intellij.dataVis.data.DataWrapper>
+    private val myListModel: DefaultListModel<org.intellij.dataVis.data.DataWrapper>
     private val myPlotPanel: DataViewTabbedPanel = DataViewTabbedPanel.getInstance(myProject)
-    private val provider: DataProvider = DataProvider.provider
+    private val provider: org.intellij.dataVis.data.DataProvider = org.intellij.dataVis.data.DataProvider.provider
 
 
     init {
@@ -36,8 +36,8 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         myListModel = DefaultListModel()
         provider.setListModel(myListModel)
         dataVarList = JBList(myListModel)
-        dataVarList.cellRenderer = object : ColoredListCellRenderer<DataWrapper>() {
-            override fun customizeCellRenderer(list: JList<out DataWrapper>, value: DataWrapper, index: Int, selected: Boolean, hasFocus: Boolean) {
+        dataVarList.cellRenderer = object : ColoredListCellRenderer<org.intellij.dataVis.data.DataWrapper>() {
+            override fun customizeCellRenderer(list: JList<out org.intellij.dataVis.data.DataWrapper>, value: org.intellij.dataVis.data.DataWrapper, index: Int, selected: Boolean, hasFocus: Boolean) {
                 append(value.name)
             }
         }

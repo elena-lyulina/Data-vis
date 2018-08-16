@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.data
+package org.intellij.dataVis.data
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -83,11 +83,11 @@ class DataWrapperTest {
     }
 
 
-    private fun getWrapperFromFilePath(path: String, separator: Char = ',') : DataWrapper {
+    private fun getWrapperFromFilePath(path: String, separator: Char = ',') : org.intellij.dataVis.data.DataWrapper {
         val classLoader = javaClass.classLoader
         val file = File(classLoader.getResource(path)!!.file)
         val data = String(file.readBytes())
-        return DataWrapper(data, separator = separator)
+        return org.intellij.dataVis.data.DataWrapper(data, separator = separator)
     }
 
 

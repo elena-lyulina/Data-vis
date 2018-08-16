@@ -1,20 +1,20 @@
-package org.jetbrains.dataVis.dataView
+package org.intellij.dataVis.dataView
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
-import org.jetbrains.dataVis.data.Column
-import org.jetbrains.dataVis.data.DataWrapper
-import org.jetbrains.dataVis.settings.Settings
-import org.jetbrains.dataVis.ui.DataViewPanel
+import org.intellij.dataVis.data.Column
+import org.intellij.dataVis.data.DataWrapper
+import org.intellij.dataVis.settings.Settings
+import org.intellij.dataVis.ui.DataViewPanel
 import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
 import javax.swing.ImageIcon
 
-class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class ScatterView(val file: org.intellij.dataVis.data.DataWrapper, parentPanel : DataViewPanel) : org.intellij.dataVis.dataView.AbstractView(file, parentPanel) {
 
     companion object {
-        private val LOG = Logger.getInstance(ScatterView::class.java)
+        private val LOG = Logger.getInstance(org.intellij.dataVis.dataView.ScatterView::class.java)
     }
 
     override val DATA_VIEW_ID = "Scatter chart"
@@ -26,13 +26,13 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
 
     override val hasSettings = true
 
-    private val xModel = DefaultComboBoxModel<Column>()
-    private val xChooser = ComboBox<Column>(xModel)
+    private val xModel = DefaultComboBoxModel<org.intellij.dataVis.data.Column>()
+    private val xChooser = ComboBox<org.intellij.dataVis.data.Column>(xModel)
 
-    private val yModel = DefaultComboBoxModel<Column>()
-    private val yChooser = ComboBox<Column>(yModel)
+    private val yModel = DefaultComboBoxModel<org.intellij.dataVis.data.Column>()
+    private val yChooser = ComboBox<org.intellij.dataVis.data.Column>(yModel)
 
-    val settings = Settings(this)
+    val settings = org.intellij.dataVis.settings.Settings(this)
 
 
     init {
@@ -55,7 +55,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
 
     override fun updatePlotPanel() {
         if (xModel.size > 0 && yModel.size > 0) {
-            LOG.info("Scatter chart is drawing")
+            org.intellij.dataVis.dataView.ScatterView.Companion.LOG.info("Scatter chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
             myVisualizer.drawScatterChart(myPlotPanel, xData, yData)
@@ -64,7 +64,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
 
         }
         else {
-            LOG.info("No available data for scatter chart")
+            org.intellij.dataVis.dataView.ScatterView.Companion.LOG.info("No available data for scatter chart")
         }
     }
 

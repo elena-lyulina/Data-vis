@@ -1,12 +1,12 @@
-package org.jetbrains.dataVis.ui
+package org.intellij.dataVis.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
 import com.intellij.ui.tabs.TabInfo
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
-import org.jetbrains.dataVis.data.DataWrapper
-import org.jetbrains.dataVis.dataView.*
+import org.intellij.dataVis.data.DataWrapper
+import org.intellij.dataVis.dataView.*
 
 import javax.swing.*
 import java.awt.*
@@ -15,10 +15,10 @@ import java.awt.GridBagConstraints.*
 
 
 // todo: open immediately when user clicks on data variable
-class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbedPanel) : JPanel() {
+class DataViewPanel(myData: org.intellij.dataVis.data.DataWrapper, private val tabbedPanel: DataViewTabbedPanel) : JPanel() {
     private val tabbedActionPanel: JPanel = JPanel(CardLayout())
-    private lateinit var dataViewKinds: List<AbstractView>
-    private var currentOpenedView: AbstractView?
+    private lateinit var dataViewKinds: List<org.intellij.dataVis.dataView.AbstractView>
+    private var currentOpenedView: org.intellij.dataVis.dataView.AbstractView?
 
     private val SETTINGS_ICON_PATH = "/oldIcons/settings.png"
     private val mySettingsAction: SettingsAction
@@ -27,10 +27,10 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
 
         runBlocking {
 
-            val table =  async { TableView(myData, this@DataViewPanel) }
-            val bar =  async { BarView(myData, this@DataViewPanel) }
-            val scatter = async { ScatterView(myData, this@DataViewPanel) }
-            val line = async { LineView(myData, this@DataViewPanel) }
+            val table =  async { org.intellij.dataVis.dataView.TableView(myData, this@DataViewPanel) }
+            val bar =  async { org.intellij.dataVis.dataView.BarView(myData, this@DataViewPanel) }
+            val scatter = async { org.intellij.dataVis.dataView.ScatterView(myData, this@DataViewPanel) }
+            val line = async { org.intellij.dataVis.dataView.LineView(myData, this@DataViewPanel) }
 
             dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
 
@@ -73,7 +73,7 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
         return ActionManager.getInstance().createActionToolbar("DataViewActions", toolbarGroup, true)
     }
 
-    private fun viewAction(view: AbstractView) : AnAction {
+    private fun viewAction(view: org.intellij.dataVis.dataView.AbstractView) : AnAction {
         return object : AnAction(view.DATA_VIEW_ID, "Show dataFile as " + view.DATA_VIEW_ID, view.actionIcon) {
 
             override fun actionPerformed(e: AnActionEvent) {

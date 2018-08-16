@@ -1,4 +1,4 @@
-package org.jetbrains.dataVis.settings
+package org.intellij.dataVis.settings
 
 import java.awt.*
 import java.awt.event.MouseAdapter
@@ -8,7 +8,7 @@ import javax.swing.JPanel
 import java.awt.Graphics2D
 
 
-class ChartSettingsPanel(settings: Settings) : JPanel() {
+class ChartSettingsPanel(settings: org.intellij.dataVis.settings.Settings) : JPanel() {
     val DEFAULT_PANEL = "defaultPanel"
     val ALL_WIDTH = 400
     val ALL_HEIGHT = 200
@@ -17,11 +17,11 @@ class ChartSettingsPanel(settings: Settings) : JPanel() {
     val RIGHT_WIDTH = ALL_WIDTH - LEFT_WIDTH
 
     val mySize = Dimension(ALL_WIDTH + 10, ALL_HEIGHT + 10)
-    val options = mutableListOf<AbstractOption>(
-            TitleOption(5, 10, RIGHT_WIDTH, ALL_HEIGHT, settings),
-            AxisOption(5, 60, RIGHT_WIDTH, ALL_HEIGHT, settings),
-            LegendOption(5, 110, RIGHT_WIDTH, ALL_HEIGHT, settings),
-            ColorsOption(5, 160, RIGHT_WIDTH, ALL_HEIGHT, settings))
+    val options = mutableListOf<org.intellij.dataVis.settings.AbstractOption>(
+            org.intellij.dataVis.settings.TitleOption(5, 10, RIGHT_WIDTH, ALL_HEIGHT, settings),
+            org.intellij.dataVis.settings.AxisOption(5, 60, RIGHT_WIDTH, ALL_HEIGHT, settings),
+            org.intellij.dataVis.settings.LegendOption(5, 110, RIGHT_WIDTH, ALL_HEIGHT, settings),
+            org.intellij.dataVis.settings.ColorsOption(5, 160, RIGHT_WIDTH, ALL_HEIGHT, settings))
 
     var leftVerticalSettingsPanel = object : JPanel() {
         init {
