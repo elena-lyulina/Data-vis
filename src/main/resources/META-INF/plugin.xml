@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>org.intellij.dataVis</id>
+    <id>org.intellij.datavis</id>
     <name>Plugin display name here</name>
     <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
@@ -17,11 +17,11 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <toolWindow id="Data Variables" secondary="true" anchor="bottom"
-                    factoryClass="org.intellij.dataVis.ui.DataToolWindowFactory"/>
+                    factoryClass="org.intellij.datavis.ui.DataVariablesToolWindowFactory"/>
         <toolWindow id="Data vis" secondary="true" anchor="right"
-                    factoryClass="org.intellij.dataVis.ui.DataViewToolWindowFactory"/>
-        <projectService serviceInterface="org.intellij.dataVis.ui.DataVariablesPanel" serviceImplementation="org.intellij.dataVis.ui.DataVariablesPanel"/>
-        <projectService serviceInterface="org.intellij.dataVis.ui.DataViewTabbedPanel" serviceImplementation="org.intellij.dataVis.ui.DataViewTabbedPanel"/>
+                    factoryClass="org.intellij.datavis.ui.DataViewToolWindowFactory"/>
+        <projectService serviceInterface="org.intellij.datavis.ui.DataVariablesPanel" serviceImplementation="org.intellij.datavis.ui.DataVariablesPanel"/>
+        <projectService serviceInterface="org.intellij.datavis.ui.DataViewTabbedPanel" serviceImplementation="org.intellij.datavis.ui.DataViewTabbedPanel"/>
 
 
 
