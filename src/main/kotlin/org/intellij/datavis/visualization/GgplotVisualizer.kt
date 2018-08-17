@@ -85,7 +85,7 @@ object GgplotVisualizer : Visualizer() {
 
 
     /**
-     * These methods call corresponding methods of b{@link org.intellij.datavis.visualization.GgplotLib} class, loaded by MyClassloader
+     * These methods call corresponding methods of {@link org.intellij.datavis.visualization.GgplotLib} class, loaded by MyClassloader
      */
     override fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>) {
         val drawBarMethod = ggplotLib.javaClass.getMethod("drawScatterChart", JPanel::class.java, List::class.java, List::class.java)
