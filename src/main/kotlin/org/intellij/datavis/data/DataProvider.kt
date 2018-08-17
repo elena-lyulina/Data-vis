@@ -1,12 +1,21 @@
 package org.intellij.datavis.data
 
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.*
 
 /**
  * All data variables are stored here and should be adding only by using {@link org.intellij.datavis.data.DataProvider#addData} method
  */
-object DataProvider {
+class DataProvider {
+
+    companion object {
+        fun getInstance(project: Project): DataProvider {
+            return ServiceManager.getService(project, DataProvider::class.java)
+        }
+    }
+
     val supportedFileFormats = hashMapOf(Pair("csv", ','), Pair("tsv", '\t'))
 
     private val dataVariables: HashMap<String, DataWrapper> = HashMap()

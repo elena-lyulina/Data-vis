@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>org.intellij.datavis</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>DataVis</name>
+    <vendor email="elena.lyulina@gmail.com" url="https://www.jetbrains.com">YourCompany</vendor>
 
     <description><![CDATA[
     Enter short description for your plugin here.<br>
@@ -22,7 +22,7 @@
                     factoryClass="org.intellij.datavis.ui.DataViewToolWindowFactory"/>
         <projectService serviceInterface="org.intellij.datavis.ui.DataVariablesPanel" serviceImplementation="org.intellij.datavis.ui.DataVariablesPanel"/>
         <projectService serviceInterface="org.intellij.datavis.ui.DataViewTabbedPanel" serviceImplementation="org.intellij.datavis.ui.DataViewTabbedPanel"/>
-
+        <projectService serviceInterface="org.intellij.datavis.data.DataProvider" serviceImplementation="org.intellij.datavis.data.DataProvider"/>
 
 
         <!--<projectService serviceImplementation="panel.AR_consoleWindow"/>-->

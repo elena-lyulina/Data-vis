@@ -1,6 +1,5 @@
 package org.intellij.datavis.visualization
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.lang.UrlClassLoader
 import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest

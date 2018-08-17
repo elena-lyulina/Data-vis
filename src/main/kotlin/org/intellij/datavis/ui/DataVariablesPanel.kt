@@ -31,7 +31,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
     private val dataVarList: JBList<DataWrapper>
     private val myListModel: DefaultListModel<DataWrapper>
     private val myPlotPanel: DataViewTabbedPanel = DataViewTabbedPanel.getInstance(myProject)
-    private val provider: DataProvider = DataProvider
+    private val provider: DataProvider = DataProvider.getInstance(myProject)
 
 
     init {
