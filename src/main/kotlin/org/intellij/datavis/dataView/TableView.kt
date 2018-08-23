@@ -19,13 +19,9 @@ class TableView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVi
         completeSettingsPanel()
     }
 
-    override fun completeSettingsPanel() {
-    }
-
     override fun updatePlotPanel() {
         myVisualizer.drawTable(file, myPlotPanel)
         myViewPanel.repaint()
         parentPanel.update()
     }
-
 }

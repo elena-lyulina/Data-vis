@@ -13,11 +13,11 @@ import java.awt.GridBagLayout
 import javax.swing.JPanel
 
 /**
- * Panel with data views toolbar and cardlayout panel {@link org.intellij.datavis.ui.DataViewPanel#tabbedActionPanel} for chart drawing
+ * Panel with toolbar of data views and cardlayout panel {@link org.intellij.datavis.ui.DataViewPanel#dataViewCardPanel} for chart drawing
  */
 // todo: open immediately when user clicks on data variable
 class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbedPanel) : JPanel() {
-    private val tabbedActionPanel: JPanel = JPanel(CardLayout())
+    private val dataViewCardPanel: JPanel = JPanel(CardLayout())
     private lateinit var dataViewKinds: List<AbstractView>
     internal var currentOpenedView: AbstractView
     private val mySettingsAction: SettingsAction
@@ -35,7 +35,7 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
 
         }
 
-        dataViewKinds.forEach { view -> tabbedActionPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
+        dataViewKinds.forEach { view -> dataViewCardPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
         currentOpenedView = dataViewKinds[0]
 //        viewSelected(dataViewKinds[0])
         mySettingsAction = SettingsAction()
@@ -59,7 +59,7 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
         c.weightx = 1.0
         c.gridx = 0
         c.gridy = 1
-        add(tabbedActionPanel, c)
+        add(dataViewCardPanel, c)
     }
 
     private fun createToolbar(): ActionToolbar {
@@ -83,8 +83,8 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
      * When view is selected, corresponding panel shows and tab icon changes
      */
     internal fun viewSelected(view: AbstractView) {
-        val cl = tabbedActionPanel.layout as CardLayout
-        cl.show(tabbedActionPanel, view.DATA_VIEW_ID)
+        val cl = dataViewCardPanel.layout as CardLayout
+        cl.show(dataViewCardPanel, view.DATA_VIEW_ID)
         currentOpenedView = view
         tabbedPanel.getCurrentOpenTabInfo()!!.icon = view.actionIcon
     }

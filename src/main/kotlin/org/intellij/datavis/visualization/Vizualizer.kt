@@ -25,7 +25,7 @@ abstract class Visualizer {
 
 
     /**
-     * Visualizing libraries are not needed to draw table, so it implements here
+     * Visualizing libraries aren't needed for drawing table, so it implements here
      */
 
     //todo: stretch all columns according to window size?
@@ -40,8 +40,6 @@ abstract class Visualizer {
             table.fillsViewportHeight = false
 
             val scrollPane = JBScrollPane(table)
-//            scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, table)
-
             plotPanel.add(scrollPane)
         }
 
@@ -65,10 +63,6 @@ abstract class Visualizer {
             return newWidth
         }
     }
-
-
-
-
 
 }
 

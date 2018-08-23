@@ -8,15 +8,15 @@ import javax.swing.*
 /**
  * All data variables are stored here and should be adding only by using {@link org.intellij.datavis.data.DataProvider#addData} method
  */
-class DataProvider {
+class DataProvider private constructor() {
 
     companion object {
-        fun getInstance(project: Project): DataProvider {
+        @JvmStatic fun getInstance(project: Project): DataProvider {
             return ServiceManager.getService(project, DataProvider::class.java)
         }
     }
 
-    val supportedFileFormats = hashMapOf(Pair("csv", ','), Pair("tsv", '\t'))
+    public val supportedFileFormats = hashMapOf(Pair("csv", ','), Pair("tsv", '\t'))
 
     private val dataVariables: HashMap<String, DataWrapper> = HashMap()
 
@@ -29,8 +29,12 @@ class DataProvider {
 
     /**
      * To add data representing as string
+     * @param id data id
+     * @param name it will be shown on data variables panel
+     * @param separator
      */
-    fun addData(id: String, name: String, data: String, separator: Char = ',') : DataWrapper {
+    @Throws(UnsupportedOperationException::class, AddingExistentElementException::class)
+    public fun addData(id: String, name: String, data: String, separator: Char = ',') : DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
             val wrapper = DataWrapper(data, name, separator)
             add(id, wrapper)
@@ -41,12 +45,12 @@ class DataProvider {
         }
     }
 
-    fun isExist(id: String) : Boolean {
+    public fun isExist(id: String) : Boolean {
         return dataVariables.containsKey(id)
     }
 
 
-    fun removeData(id : String) {
+    public fun removeData(id : String) {
         if(isExist(id)) {
             dataVariables.remove(id)
             dataVariables[id]?.let { notifyModelAboutRemoving(it) }
@@ -58,8 +62,13 @@ class DataProvider {
 
     /**
      * To add data representing as virtual file
+     * Its hashcode is used as data id
+     * Its name will be shown on data variables panel
+     * @param file Virtual file loaded by user
+     * @param separator
      */
-    fun addData(file: VirtualFile, separator: Char?) : DataWrapper {
+    @Throws(UnsupportedOperationException::class, AddingExistentElementException::class)
+    public fun addData(file: VirtualFile, separator: Char?) : DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
             val wrapper = DataWrapper(file, separator!!)
             add(file.hashCode().toString(), wrapper)
@@ -89,6 +98,7 @@ class DataProvider {
         modelToNotify!!.removeElement(toRemove)
     }
 
+    @Throws(AddingExistentElementException::class)
     private fun add(id: String, data: DataWrapper) {
         if (!isExist(id)) {
             dataVariables[id] = data

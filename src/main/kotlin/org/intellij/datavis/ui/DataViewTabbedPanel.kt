@@ -52,9 +52,7 @@ class DataViewTabbedPanel {
         }
     }
 
-
     companion object {
-
         fun getInstance(project: Project): DataViewTabbedPanel {
             return ServiceManager.getService(project, DataViewTabbedPanel::class.java)
         }

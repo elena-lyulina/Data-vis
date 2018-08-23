@@ -67,7 +67,9 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
 
 
     /**
-     * Action to load data from a local file system
+     * An action to load data from a local file system
+     * Files filter according to {@link org.intellij.datavis.data.DataProvider#supportedFileFormats
+     * After choosing, file is added to data provider
      */
     private inner class LoadDataAction internal constructor() : AnAction("Load data", "Load data", AllIcons.Actions.Download) {
 

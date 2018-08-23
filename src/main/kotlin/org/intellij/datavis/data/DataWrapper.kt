@@ -103,23 +103,14 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
 
         return true
     }
-
-
-
-    /**
-     *    If at least one header is number (doesnt contain any letters), i presume there is no headers at all
-     *    and the given line is the first row of table
-     */
-
-//    private fun checkHeaders(headers: List<String>) {
-//        headers.all { }
-//    }
-
-
 }
 
 
 // todo : think about private access
+
+/**
+ * Class that represents data column with header and list of values
+ */
 data class Column constructor (val header: String, val values: MutableList<String> = ArrayList()) {
     val doubleValues = ArrayList<Double>()
     var canBeCastedToDouble: Boolean = true

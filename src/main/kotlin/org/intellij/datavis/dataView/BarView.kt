@@ -30,7 +30,7 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
 
 
     /**
-     * currently settings only consist of a combobox... but it s temporary
+     * currently settings consist only of a combobox... but it s temporary
      */
     override fun completeSettingsPanel() {
         mySettingsPanel.layout = BoxLayout(mySettingsPanel, BoxLayout.LINE_AXIS)
@@ -42,10 +42,6 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
         valueChooser.addActionListener { updatePlotPanel() }
 
         dataSettingsPanel.add(valueChooser)
-//        dataSettingsPanel.background = Color.WHITE
-//        dataSettingsPanel.preferredSize = Dimension(SETTINGS_WIDTH, SETTINGS_HEIGHT)
-//        dataSettingsPanel.minimumSize = Dimension(SETTINGS_WIDTH, SETTINGS_HEIGHT)
-//        dataSettingsPanel.maximumSize = Dimension(SETTINGS_WIDTH, SETTINGS_HEIGHT)
 
     }
 
