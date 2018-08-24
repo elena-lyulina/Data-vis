@@ -17,7 +17,7 @@ import java.util.stream.IntStream
  * @param separator by default it's comma, but it can be tab '\t' also
  */
 
-class DataWrapper (data: String, val name: String = "Name", val separator: Char = ',') {
+class DataWrapper (val ID: String, data: String, val name: String = "Name", val separator: Char = ',') {
     companion object {
         private val LOG = Logger.getInstance(DataVariablesToolWindowFactory::class.java)
     }
@@ -31,7 +31,7 @@ class DataWrapper (data: String, val name: String = "Name", val separator: Char 
         parsed = parseCSV(StringReader(data))
     }
 
-    constructor (file: VirtualFile, separator: Char) : this(String(file.contentsToByteArray()), file.name, separator) {
+    constructor (id: String, file: VirtualFile, separator: Char) : this(id, String(file.contentsToByteArray()), file.name, separator) {
         virtualFile = file
     }
 

@@ -116,11 +116,19 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         }
     }
 
+    private fun removeVariable() {
+        if (dataVarList.selectedValue != null) {
+            provider.removeData(dataVarList.selectedValue.ID)
+        }
+    }
+
     private inner class EnterPressingListener : KeyAdapter() {
 
         override fun keyReleased(e: KeyEvent) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                selectVariable()
+            val code = e.keyCode
+            when (code) {
+                KeyEvent.VK_ENTER -> selectVariable()
+                KeyEvent.VK_DELETE -> removeVariable()
             }
         }
     }

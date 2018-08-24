@@ -36,7 +36,7 @@ class DataProvider private constructor() {
     @Throws(UnsupportedOperationException::class, AddingExistentElementException::class)
     public fun addData(id: String, name: String, data: String, separator: Char = ',') : DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
-            val wrapper = DataWrapper(data, name, separator)
+            val wrapper = DataWrapper(id, data, name, separator)
             add(id, wrapper)
             return wrapper
         }
@@ -52,8 +52,8 @@ class DataProvider private constructor() {
 
     public fun removeData(id : String) {
         if(isExist(id)) {
-            dataVariables.remove(id)
             dataVariables[id]?.let { notifyModelAboutRemoving(it) }
+            dataVariables.remove(id)
         }
         else {
             throw RemovingNonexistentElementException()
@@ -70,8 +70,9 @@ class DataProvider private constructor() {
     @Throws(UnsupportedOperationException::class, AddingExistentElementException::class)
     public fun addData(file: VirtualFile, separator: Char?) : DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
-            val wrapper = DataWrapper(file, separator!!)
-            add(file.hashCode().toString(), wrapper)
+            val id = file.hashCode().toString()
+            val wrapper = DataWrapper(id, file, separator!!)
+            add(id, wrapper)
             return wrapper
         }
         else {
