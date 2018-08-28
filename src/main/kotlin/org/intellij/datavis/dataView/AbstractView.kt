@@ -1,6 +1,10 @@
 package org.intellij.datavis.dataView
 
+import com.intellij.util.ui.JBInsets
+import com.intellij.util.ui.JBUI
 import org.intellij.datavis.data.DataWrapper
+import org.intellij.datavis.settings.ChartSettingsPanel
+import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import org.intellij.datavis.visualization.GgplotFactory
 import org.intellij.datavis.visualization.VisFactory
@@ -50,13 +54,13 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
         myViewPanel.layout = GridBagLayout()
         val c = GridBagConstraints()
 
-        c.fill = HORIZONTAL
+        c.fill = NONE
         c.gridx = 0
         c.gridy = 0
         c.weighty = 0.0
         c.weightx= 0.0
         c.anchor = FIRST_LINE_START
-        c.insets = Insets(0, 15, 0, 15)
+        //c.insets = Insets(0, 15, 0, 15)
         myViewPanel.add(mySettingsPanel, c)
 
         c.fill = BOTH
@@ -64,9 +68,13 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
         c.gridy = 1
         c.weighty = 1.0
         c.weightx= 1.0
-        c.insets = Insets(15, 15, 15, 15)
-        // c.anchor = CENTER
+        c.insets = JBInsets(5, 5, 5, 5)
+        c.anchor = CENTER
         myViewPanel.add(myPlotPanel, c)
+
+
+        myPlotPanel.preferredSize = myPlotPanel.preferredSize;
+        myPlotPanel.validate()
 
         myPlotPanel.background = Color.WHITE
     }
@@ -80,16 +88,15 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
         mySettingsPanel.isVisible = hasSettings
     }
 
-//
-//    fun completeMySettings() {
-//        mySettings.layout = GridBagLayout();
-//        val gc = GridBagConstraints()
-//        mySettings.preferredSize = Dimension(100, 200)
-//        mySettings.background = Color.BLACK
-//        mySettings.add(mySettingsPanel, gc)
-//
-//    }
+    internal fun addChartSettings(settings: Settings) {
+        mySettingsPanel.layout = BoxLayout(mySettingsPanel, BoxLayout.X_AXIS)
+        val box = Box.createHorizontalBox()
+        //left inset
+        box.add(Box.createHorizontalStrut(JBUI.scale(5)))
+        box.add(ChartSettingsPanel(settings))
+        mySettingsPanel.add(box)
 
+    }
 
     /**
      * To hide or show settings panel

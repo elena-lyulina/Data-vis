@@ -4,6 +4,7 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
+import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import javax.swing.BoxLayout
 import javax.swing.DefaultComboBoxModel
@@ -22,6 +23,7 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
     private val valueChooser = ComboBox<Column>(valueModel)
 
     val dataSettingsPanel = JPanel()
+    var settings = Settings(this)
 
     init {
         completeSettingsPanel()
@@ -33,8 +35,8 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
      * currently settings consist only of a combobox... but it s temporary
      */
     override fun completeSettingsPanel() {
-        mySettingsPanel.layout = BoxLayout(mySettingsPanel, BoxLayout.LINE_AXIS)
-      //  mySettingsPanel.add(ChartSettingsPanel(settings))
+        addChartSettings(settings)
+
         mySettingsPanel.add(dataSettingsPanel)
 
 
@@ -46,7 +48,7 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
     }
 
     override fun updatePlotPanel() {
-        myVisualizer.drawBarChart("", myPlotPanel, valueModel.getElementAt(valueChooser.selectedIndex).values)
+        myVisualizer.drawBarChart("", myPlotPanel, valueModel.getElementAt(valueChooser.selectedIndex).values, settings)
         myViewPanel.repaint()
         parentPanel.update()
     }

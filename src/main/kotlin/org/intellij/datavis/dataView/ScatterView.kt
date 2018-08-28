@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
+import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
@@ -28,6 +29,8 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     private val yModel = DefaultComboBoxModel<Column>()
     private val yChooser = ComboBox<Column>(yModel)
 
+    var settings = Settings(this)
+
     init {
         completeSettingsPanel()
         updatePlotPanel()
@@ -35,6 +38,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     }
 
     override fun completeSettingsPanel() {
+        addChartSettings(settings)
 
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }
@@ -51,7 +55,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
             LOG.info("Scatter chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
-            myVisualizer.drawScatterChart(myPlotPanel, xData, yData)
+            myVisualizer.drawScatterChart(myPlotPanel, xData, yData, settings)
             myViewPanel.repaint()
             parentPanel.update()
 

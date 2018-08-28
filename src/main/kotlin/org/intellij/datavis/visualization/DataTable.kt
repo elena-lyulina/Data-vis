@@ -16,7 +16,7 @@ import javax.swing.table.TableCellRenderer
 
 class DataTable(myHeaders: List<String>, myColumns: List<Column>) : JBTable() {
 
-    private val selectionColor = JBColor(Color(201, 209, 221), Color(13, 41, 62))
+    private val selectionColor = JBColor(Color(226, 230, 236), Color(13, 41, 62))
     private val secondColor = JBColor(Color(249, 251, 252), Color(43, 43, 43))
 
     private val myScrollPane: JBScrollPane

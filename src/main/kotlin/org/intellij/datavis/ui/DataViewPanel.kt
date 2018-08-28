@@ -6,6 +6,7 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.dataView.*
+import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.*
@@ -40,26 +41,32 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
 //        viewSelected(dataViewKinds[0])
         mySettingsAction = SettingsAction()
 
-        layout = GridBagLayout()
-        val c = GridBagConstraints()
+//        layout = GridBagLayout()
+//        val c = GridBagConstraints()
+//
+//        c.fill = HORIZONTAL
+//        c.weightx = 0.0
+//        c.weighty = 0.0
+//        c.gridx = 0
+//        c.gridy = 0
+//        c.anchor = FIRST_LINE_START
+//
+//        val toolbar = createToolbar().component
+//        add(toolbar, c)
+//
+//
+//        c.fill = BOTH
+//        c.weighty = 1.0
+//        c.weightx = 1.0
+//        c.gridx = 0
+//        c.gridy = 1
+//        add(dataViewCardPanel, c)
 
-        c.fill = HORIZONTAL
-        c.weightx = 0.0
-        c.weighty = 0.0
-        c.gridx = 0
-        c.gridy = 0
-        c.anchor = FIRST_LINE_START
 
+        layout = BorderLayout()
         val toolbar = createToolbar().component
-        add(toolbar, c)
-
-
-        c.fill = BOTH
-        c.weighty = 1.0
-        c.weightx = 1.0
-        c.gridx = 0
-        c.gridy = 1
-        add(dataViewCardPanel, c)
+        add(toolbar, BorderLayout.NORTH)
+        add(dataViewCardPanel, BorderLayout.CENTER)
     }
 
     private fun createToolbar(): ActionToolbar {
