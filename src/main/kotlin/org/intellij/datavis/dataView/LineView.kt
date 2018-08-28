@@ -7,6 +7,7 @@ import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
+import org.intellij.datavis.visualization.LineChart
 import javax.swing.*
 import javax.swing.ImageIcon
 
@@ -59,7 +60,11 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
             LOG.info("Line chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
-            myVisualizer.drawLineChart(myPlotPanel, xData, yData, settings)
+
+            val chart = LineChart(xData, yData, settings)
+            myVisualizer.draw(chart, myPlotPanel)
+
+           // myVisualizer.drawLineChart(myPlotPanel, xData, yData, settings)
             myViewPanel.repaint()
             parentPanel.update()
         }

@@ -7,6 +7,7 @@ import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
+import org.intellij.datavis.visualization.LineChart
 import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
 import javax.swing.ImageIcon
@@ -55,7 +56,10 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
             LOG.info("Scatter chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
-            myVisualizer.drawScatterChart(myPlotPanel, xData, yData, settings)
+
+            val chart = LineChart(xData, yData, settings)
+            myVisualizer.draw(chart, myPlotPanel)
+
             myViewPanel.repaint()
             parentPanel.update()
 

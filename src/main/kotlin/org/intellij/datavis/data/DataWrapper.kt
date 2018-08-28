@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils
 import org.intellij.datavis.ui.DataVariablesToolWindowFactory
 import java.io.*
 import java.util.*
-import java.util.stream.IntStream
 
 
 /**
@@ -16,7 +15,6 @@ import java.util.stream.IntStream
  * @param name that name will be showing at dataVariables panel, for virtual file it's file's name
  * @param separator by default it's comma, but it can be tab '\t' also
  */
-
 class DataWrapper (val ID: String, data: String, val name: String = "Name", val separator: Char = ',') {
     companion object {
         private val LOG = Logger.getInstance(DataVariablesToolWindowFactory::class.java)
@@ -59,7 +57,7 @@ class DataWrapper (val ID: String, data: String, val name: String = "Name", val 
                 columns = ArrayList()
 
                 // to replace blank headers:
-                IntStream.range(0, headers.size).forEach { i: Int ->
+                for (i in 0 until headers.size) {
                     if (StringUtils.isBlank(headers[i])) headers[i] = "column${i}"
                     columns.add(Column(headers[i]))
                 }
@@ -99,19 +97,20 @@ class DataWrapper (val ID: String, data: String, val name: String = "Name", val 
             return false
         }
 
-        IntStream.range(0, columns.size).forEach { i -> columns[i].addValue(line[i]) }
+
+        for (i in 0 until columns.size) {
+            columns[i].addValue(line[i])
+        }
 
         return true
     }
 }
 
 
-// todo : think about private access
-
 /**
  * Class that represents data column with header and list of values
  */
-data class Column constructor (val header: String, val values: MutableList<String> = ArrayList()) {
+data class Column (val header: String, val values: MutableList<String> = ArrayList()) {
     val doubleValues = ArrayList<Double>()
     var canBeCastedToDouble: Boolean = true
 

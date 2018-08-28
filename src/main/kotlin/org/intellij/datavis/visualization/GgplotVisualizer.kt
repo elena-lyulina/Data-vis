@@ -1,11 +1,11 @@
 package org.intellij.datavis.visualization
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.lang.UrlClassLoader
 import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest
 import org.intellij.datavis.settings.Settings
 import java.awt.Color
-import java.awt.Dimension
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.URL
@@ -15,7 +15,6 @@ import java.util.*
 import javax.swing.JPanel
 import kotlin.collections.ArrayList
 import kotlin.reflect.full.createInstance
-
 
 object GgplotVisualizer : Visualizer() {
 
@@ -27,10 +26,25 @@ object GgplotVisualizer : Visualizer() {
     private var ggplotLib: Any
     private lateinit var myClassLoader: URLClassLoader
 
+    private val LOG = Logger.getInstance(javaClass)
+
     init {
         ggplotLib = loadGgplotVisualizer()
     }
 
+
+    override fun draw(chart: ChartView, panel: JPanel) {
+        when (chart) {
+            is LineChart -> invokeMethod("drawLineChart", arrayOf(panel, chart.xData, chart.yData, chart.settings),
+                    arrayOf(JPanel::class.java, List::class.java, List::class.java, Settings::class.java))
+            is ScatterChart -> invokeMethod("drawScatterChart", arrayOf(panel, chart.xData, chart.yData, chart.settings),
+                    arrayOf(JPanel::class.java, List::class.java, List::class.java, Settings::class.java))
+            is BarChart -> invokeMethod("drawBarChart", arrayOf(panel, chart.data, chart.settings),
+                    arrayOf(JPanel::class.java, List::class.java, Settings::class.java))
+            else  ->  LOG.warn("Cannot draw such type of chart")
+
+        }
+    }
 
     /**
      * Ggplot lib uses apache.batik v.1.7 while plugin classloader loads apache.batik v. 1.10
@@ -91,20 +105,15 @@ object GgplotVisualizer : Visualizer() {
 
 
     /**
-     * These methods call corresponding methods of {@link org.intellij.datavis.visualization.GgplotLib} class, loaded by MyClassloader
+     *
      */
-    override fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
-        val drawBarMethod = ggplotLib.javaClass.getMethod("drawScatterChart", JPanel::class.java, List::class.java, List::class.java, Settings::class.java)
-        drawBarMethod.invoke(ggplotLib, panel, xData, yData, settings)    }
+    private fun invokeMethod(name: String, args: Array<*>, classes: Array<Class<*>>) {
+        assert(args.size == classes.size)
+        for (i in 0 until classes.size)
+            assert(classes[i].isInstance(args[i]))
 
-    override fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
-        val drawBarMethod = ggplotLib.javaClass.getMethod("drawLineChart", JPanel::class.java, List::class.java, List::class.java, Settings::class.java)
-        drawBarMethod.invoke(ggplotLib, panel, xData, yData, settings)    }
-
-    override fun drawBarChart(title: String, panel: JPanel, data: List<*>, settings: Settings) {
-        val drawBarMethod = ggplotLib.javaClass.getMethod("drawBarChart", String::class.java, JPanel::class.java, List::class.java, Settings::class.java)
-        drawBarMethod.invoke(ggplotLib, title, panel, data, settings)
-
+        val method = ggplotLib.javaClass.getMethod(name, *classes)
+        method.invoke(ggplotLib, *args)
     }
 
 }
@@ -112,7 +121,7 @@ object GgplotVisualizer : Visualizer() {
 
 
 
-class GgplotLib : Visualizer() {
+class GgplotLib  {
     //todo: change chart size according to window size!
     private val VIEW_SIZE = DoubleVector(1500.0, 1000.0)
 
@@ -120,19 +129,19 @@ class GgplotLib : Visualizer() {
         println(javaClass.classLoader)
     }
 
-    override fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
+    fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicLineChart(xData, yData, settings))
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
     }
 
-    override fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
+    fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicScatterChart(xData, yData, settings))
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
     }
 
-    override fun drawBarChart(title: String, panel: JPanel, data: List<*>, settings: Settings) {
+    fun drawBarChart(panel: JPanel, data: List<*>, settings: Settings) {
         panel.removeAll()
         val plotSpecList = Arrays.asList<Map<String, Any>>(basicBarChart(data, settings))
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
@@ -232,49 +241,50 @@ class GgplotLib : Visualizer() {
     }
 
 
+   fun StringBuilder.appendWithComa(isFirstLine: Boolean, toAppend: String) : Boolean {
+        if(!isFirstLine) {
+            this.append(", ")
+        }
+        this.append(toAppend)
+        return false
+    }
+
+
     private fun theme(settings: Settings) : String {
-        var isFirstLine = true;
+        var addComa = true;
         val builder = StringBuilder("'theme': {")
 
         if (settings.xTitle.isBlank()) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_title_x': {'name': 'blank'} ")
+            addComa = builder.appendWithComa(addComa, "'axis_title_x': {'name': 'blank'} ")
         }
 
         if (settings.yTitle.isBlank()) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_title_y': {'name': 'blank'} ")
+            addComa = builder.appendWithComa(addComa, "'axis_title_y': {'name': 'blank'} ")
         }
-        // else builder.append("'axis_title_y': {'name': '${settings.yTitle}'} ")
 
         if (!settings.xLabels) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_text_x': {'name': 'blank'}")
+            addComa = builder.appendWithComa(addComa, "'axis_text_x': {'name': 'blank'} ")
         }
 
         if (!settings.yLabels) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_text_y': {'name': 'blank'}")
+            addComa = builder.appendWithComa(addComa, "'axis_text_y': {'name': 'blank'}" )
         }
 
         if (!settings.xTicks) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_ticks_x': {'name': 'blank'}")
+            addComa = builder.appendWithComa(addComa, "'axis_ticks_x': {'name': 'blank'}" )
         }
 
         if (!settings.yTicks) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_ticks_y': {'name': 'blank'}")
+            addComa = builder.appendWithComa(addComa, "'axis_ticks_y': {'name': 'blank'}")
         }
 
         if (!settings.xLines) {
-            isFirstLine = addComa(isFirstLine, builder)
+            addComa = builder.appendWithComa(addComa, "'axis_line_x': {'name': 'blank'}")
             builder.append("'axis_line_x': {'name': 'blank'}")
         }
 
         if (!settings.yLines) {
-            isFirstLine = addComa(isFirstLine, builder)
-            builder.append("'axis_line_y': {'name': 'blank'}")
+            addComa = builder.appendWithComa(addComa, "'axis_line_y': {'name': 'blank'}")
         }
 
         builder.append("}")

@@ -8,18 +8,13 @@ import javax.swing.JTable
 
 abstract class Visualizer {
 
-    /**
-     * Three types of charts are supported: barChart, lineChart and scatterChart
-     */
-    abstract fun drawBarChart(title: String, panel: JPanel, data: List<*>, settings: Settings)
-    abstract fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings)
-    abstract fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings)
+    abstract fun draw(chart: ChartView, panel: JPanel)
 
 
+    //todo: distinguish tableView and chartView?
     /**
      * Visualizing libraries aren't needed for drawing table, so it implements here
      */
-
     fun drawTable(dataFile: DataWrapper, plotPanel: JPanel) {
 
         plotPanel.layout = BoxLayout(plotPanel, BoxLayout.LINE_AXIS)
