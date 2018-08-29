@@ -13,7 +13,7 @@ class Settings(private val dataView: AbstractView) {
         println(javaClass.classLoader)
     }
 
-    var plotSize: Dimension = Dimension(1000, 1000)
+    var plotSize: Dimension = Dimension(1760, 870)
         set(value) {
             println(value)
             field = value

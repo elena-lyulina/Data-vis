@@ -3,13 +3,18 @@ package org.intellij.datavis.dataView
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
+import com.intellij.ui.JBColor
+import com.intellij.util.ui.JBInsets
+import com.intellij.util.ui.JBUI.scale
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import org.intellij.datavis.visualization.LineChart
+import java.awt.Dimension
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import javax.swing.*
-import javax.swing.ImageIcon
 
 
 class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
@@ -34,6 +39,7 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
 
     init {
+        //myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()
     }
@@ -41,16 +47,50 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
     // todo: if there is no double values
     override fun completeSettingsPanel() {
+        val comboBoxSize = scale(200)
+
         addChartSettings(settings)
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }
         yChooser.addActionListener { updatePlotPanel() }
 
-        val box = Box.createVerticalBox()
-        box.add(xChooser)
-        box.add(Box.createVerticalGlue())
-        box.add(yChooser)
-        mySettingsPanel.add(box)
+        xChooser.maximumSize = Dimension(comboBoxSize, xChooser.preferredSize.height);
+        xChooser.preferredSize =  Dimension(comboBoxSize, xChooser.preferredSize.height);
+        xChooser.minimumSize = Dimension(comboBoxSize, xChooser.preferredSize.height);
+
+        yChooser.maximumSize = Dimension(comboBoxSize, yChooser.preferredSize.height);
+        yChooser.preferredSize =  Dimension(comboBoxSize, yChooser.preferredSize.height);
+        yChooser.minimumSize = Dimension(comboBoxSize, yChooser.preferredSize.height);
+
+        val chooserPanel = JPanel(GridBagLayout())
+        val c = GridBagConstraints()
+
+        c.gridwidth = 1
+        c.anchor = GridBagConstraints.WEST
+
+        c.gridx = 0
+        c.gridy = 0
+        c.insets = JBInsets(0, 6, 0, 5)
+        chooserPanel.add(JLabel("Data for X-axis:"), c)
+
+        c.gridx = 0
+        c.gridy = 1
+        c.insets = JBInsets(0, 5, 0, 5)
+        chooserPanel.add(xChooser, c)
+
+        c.gridx = 1
+        c.gridy = 0
+        c.insets = JBInsets(0, 6, 0, 5)
+        chooserPanel.add(JLabel("Data for Y-axis:"), c)
+
+        c.gridx = 1
+        c.gridy = 1
+        c.insets = JBInsets(0, 5, 0, 5)
+        chooserPanel.add(yChooser, c)
+
+        chooserPanel.border = BorderFactory.createMatteBorder(1, 0, 1, 1, JBColor.DARK_GRAY)
+        mySettingsPanel.add(chooserPanel)
+
 
         myViewPanel.repaint()
     }
@@ -64,7 +104,6 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
             val chart = LineChart(xData, yData, settings)
             myVisualizer.draw(chart, myPlotPanel)
 
-           // myVisualizer.drawLineChart(myPlotPanel, xData, yData, settings)
             myViewPanel.repaint()
             parentPanel.update()
         }

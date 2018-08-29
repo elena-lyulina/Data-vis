@@ -14,6 +14,10 @@ import javax.swing.*
 import java.awt.*
 import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.*
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import java.awt.event.ComponentEvent
+import java.awt.event.ComponentListener
 
 
 internal interface View {
@@ -104,6 +108,47 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
     fun changeVisibilityOfSettings() {
         if (hasSettings) {
             mySettingsPanel.isVisible = !mySettingsPanel.isVisible
+        }
+    }
+
+    inner class PanelResizeListener(val settings: Settings) : ComponentListener, ActionListener {
+        private val DELAY = 100
+        private var waitingTimer: Timer? = null
+
+        override fun actionPerformed(ae: ActionEvent?) {
+            if (ae?.source == waitingTimer) {
+                waitingTimer?.stop()
+                waitingTimer = null
+                applyResize(settings)
+            }
+        }
+
+        override fun componentResized(p0: ComponentEvent?) {
+            if (waitingTimer == null) {
+                waitingTimer = Timer(DELAY, this);
+                waitingTimer!!.start();
+            } else {
+                waitingTimer!!.restart();
+            }
+        }
+
+        override fun componentHidden(p0: ComponentEvent?) {
+        }
+
+        override fun componentShown(p0: ComponentEvent?) {
+        }
+
+        override fun componentMoved(p0: ComponentEvent?) {
+        }
+
+    }
+
+    // вот это вот не оч норм, там каждая вкладка перерисовывается
+    fun applyResize(settings: Settings) {
+        settings.plotSize = myPlotPanel.size
+        if (this@AbstractView == parentPanel.currentOpenedView) {
+            println(settings.plotSize)
+            parentPanel.currentOpenedView.updatePlotPanel()
         }
     }
 

@@ -17,7 +17,7 @@ interface SettingsOption {
 }
 
 class ChartSettingsPanel(val settings: Settings) : JPanel() {
-    private val settingsOptions = arrayOf(TitlePanel(settings), ColorPanel(settings), AxisPanel(settings), LegendPanel(settings))
+    private val settingsOptions = arrayOf(AxisPanel(settings), TitlePanel(settings), ColorPanel(settings), LegendPanel(settings))
     private val listPanel = JPanel()
     private val cardPanel = JPanel(CardLayout())
     private val optionListModel: DefaultListModel<SettingsOption> = DefaultListModel()
