@@ -39,7 +39,7 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
 
     init {
-        //myPlotPanel.addComponentListener(PanelResizeListener(settings))
+        myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()
     }

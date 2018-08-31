@@ -24,7 +24,7 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
     private val mySettingsAction: SettingsAction
 
     init {
-
+// extension point for abstract view
         runBlocking {
 
             val table =  async { TableView(myData, this@DataViewPanel) }

@@ -37,7 +37,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     var settings = Settings(this)
 
     init {
-        //myPlotPanel.addComponentListener(PanelResizeListener(settings))
+        myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()
     }

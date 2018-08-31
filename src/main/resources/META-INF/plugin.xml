@@ -18,18 +18,20 @@
 
         <toolWindow id="Data Variables" secondary="true" anchor="bottom"
                     factoryClass="org.intellij.datavis.ui.DataVariablesToolWindowFactory"/>
-        <toolWindow id="Data vis" secondary="true" anchor="right"
+        <toolWindow id="Data Vis" secondary="true" anchor="right"
                     factoryClass="org.intellij.datavis.ui.DataViewToolWindowFactory"/>
         <projectService serviceInterface="org.intellij.datavis.ui.DataVariablesPanel" serviceImplementation="org.intellij.datavis.ui.DataVariablesPanel"/>
         <projectService serviceInterface="org.intellij.datavis.ui.DataViewTabbedPanel" serviceImplementation="org.intellij.datavis.ui.DataViewTabbedPanel"/>
         <projectService serviceInterface="org.intellij.datavis.data.DataProvider" serviceImplementation="org.intellij.datavis.data.DataProvider"/>
 
-
-        <!--<projectService serviceImplementation="panel.AR_consoleWindow"/>-->
-
-    </extensions>
+   </extensions>
 
     <actions>
+
+        <!--<action id="PyDebugger.ViewArray" class="com.jetbrains.python.debugger.containerview.PyViewNumericContainerAction" text="View as Array">-->
+            <!--<add-to-group group-id="XDebugger.ValueGroup" anchor="after" relative-to-action="Debugger.AddToWatch"/>-->
+        <!--</action>-->
+
         <!-- Add your actions here -->
         <!--<action id="panel.AR_Action" class="panel.AR_Action" text="AR">-->
             <!--<add-to-group group-id="FileMenu" anchor="first"/>-->

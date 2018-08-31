@@ -26,7 +26,6 @@ public class AxisPanel implements SettingsOption {
         this.settings = settings;
 
 
-
         MyTableModel myModel = new MyTableModel();
         table = new MyTable(myModel);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -54,12 +53,19 @@ public class AxisPanel implements SettingsOption {
     class MyTableModel extends AbstractTableModel {
         private String[] columnNames = {"Properties", "x", "y"};
 
+        private Object[][] data = new Object[][]{
+                {"titles", settings.getXTitle(), settings.getYTitle() },
+                { "labels", settings.getXLabels(), settings.getYLabels() },
+                {"ticks", settings.getXTicks(), settings.getYTicks() },
+                { "lines", settings.getXLines(), settings.getYLines()} };
+
         public int getColumnCount() {
             return columnNames.length;
         }
 
         public int getRowCount() {
             return settings.getGettersAxisTable().size();
+            //return data.length;
         }
 
         public String getColumnName(int col) {
@@ -68,6 +74,7 @@ public class AxisPanel implements SettingsOption {
 
         public Object getValueAt(int row, int col) {
             return settings.getGettersAxisTable().get(row).get(col).invoke();
+            //return data[row][col];
         }
 
         public Class getColumnClass(int c) {
@@ -80,6 +87,8 @@ public class AxisPanel implements SettingsOption {
 
         public void setValueAt(Object value, int row, int col) {
             settings.getSettersAxisTable().get(row).get(col).invoke(value);
+           // data[row][col] = value;
+           // fireTableCellUpdated(row, col);
         }
     }
 

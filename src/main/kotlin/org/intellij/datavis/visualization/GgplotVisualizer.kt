@@ -16,7 +16,7 @@ import javax.swing.JPanel
 import kotlin.collections.ArrayList
 import kotlin.reflect.full.createInstance
 
-object GgplotVisualizer : Visualizer() {
+object GgplotVisualizer : Visualizer {
 
     private val GG_LIB_NAME = "gog-awt_deploy_woj.jar"
     private val GGPLOT_NAME = "org.intellij.datavis.visualization.GgplotLib"

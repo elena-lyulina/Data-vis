@@ -8,6 +8,7 @@ import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.ColoredListCellRenderer
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBList
@@ -16,6 +17,7 @@ import com.intellij.ui.layout.panel
 import com.intellij.ui.tabs.TabInfo
 import org.intellij.datavis.data.DataProvider
 import org.intellij.datavis.data.DataWrapper
+import org.intellij.datavis.ui.DataViewTabbedPanel.Companion.DATA_VIEWER_ID
 
 import javax.swing.*
 import java.awt.*
@@ -23,6 +25,7 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+
 
 /**
  * Panel for toolwindow with data variables, contains list of loaded variables
@@ -35,7 +38,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
 
 
     init {
-        this.add(createToolbar().component, BorderLayout.WEST)
+        add(createToolbar().component, BorderLayout.WEST)
         myListModel = DefaultListModel()
         provider.setListModel(myListModel)
         dataVarList = JBList(myListModel)
@@ -49,12 +52,13 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         dataVarList.addKeyListener(EnterPressingListener())
 
         //not sure do i need scroll pane or it s added automatically todo: check it
-        this.add(ScrollPaneFactory.createScrollPane(dataVarList), BorderLayout.CENTER)
+        val scrollPane = ScrollPaneFactory.createScrollPane(dataVarList);
+        add(scrollPane, BorderLayout.CENTER)
     }
 
     fun init(toolWindow: ToolWindow) {
         val contentFactory = ContentFactory.SERVICE.getInstance()
-        val content = contentFactory.createContent(this, "", false)
+        val content = contentFactory.createContent( this, "", false)
         content.isCloseable = false
         toolWindow.contentManager.addContent(content)
     }
@@ -102,6 +106,9 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         if(dataVarList.selectedValue != null) {
             val selected = dataVarList.selectedValue
             val panelToAdd = if (selected.parsed) DataViewPanel(selected, myPlotPanel) else DataNotParsedPanel()
+
+            ToolWindowManager.getInstance(myProject).getToolWindow(DATA_VIEWER_ID).show(null)
+
             myPlotPanel.addTab(selected.name, panelToAdd, selected.parsed)
             (panelToAdd as? DataViewPanel)?.viewSelected(panelToAdd.currentOpenedView)
             LOG.info("${selected.name} selected")

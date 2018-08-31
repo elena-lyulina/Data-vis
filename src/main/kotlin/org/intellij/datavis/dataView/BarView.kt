@@ -29,7 +29,7 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
     var settings = Settings(this)
 
     init {
-        //myPlotPanel.addComponentListener(PanelResizeListener(settings))
+        myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()
     }

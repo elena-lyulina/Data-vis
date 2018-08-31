@@ -6,9 +6,9 @@ import javax.swing.*
 import javax.swing.JTable
 
 
-abstract class Visualizer {
+interface Visualizer {
 
-    abstract fun draw(chart: ChartView, panel: JPanel)
+    fun draw(chart: ChartView, panel: JPanel)
 
 
     //todo: distinguish tableView and chartView?
