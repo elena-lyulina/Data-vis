@@ -25,17 +25,17 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
 
     init {
 // extension point for abstract view
-        runBlocking {
-
-            val table =  async { TableView(myData, this@DataViewPanel) }
-            val bar =  async { BarView(myData, this@DataViewPanel) }
-            val scatter = async { ScatterView(myData, this@DataViewPanel) }
-            val line = async { LineView(myData, this@DataViewPanel) }
-
-            dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
-
-        }
-
+//        runBlocking {
+//
+//            val table =  async { TableView(myData, this@DataViewPanel) }
+//            val bar =  async { BarView(myData, this@DataViewPanel) }
+//            val scatter = async { ScatterView(myData, this@DataViewPanel) }
+//            val line = async { LineView(myData, this@DataViewPanel) }
+//
+//            dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
+//
+//        }
+        dataViewKinds = arrayListOf(TableView(myData, this), BarView(myData, this), ScatterView(myData, this), LineView(myData, this))
         dataViewKinds.forEach { view -> dataViewCardPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
         currentOpenedView = dataViewKinds[0]
 //        viewSelected(dataViewKinds[0])
@@ -93,6 +93,7 @@ class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbed
         val cl = dataViewCardPanel.layout as CardLayout
         cl.show(dataViewCardPanel, view.DATA_VIEW_ID)
         currentOpenedView = view
+        currentOpenedView.updatePlotPanel()
         tabbedPanel.getCurrentOpenTabInfo()!!.icon = view.actionIcon
     }
 

@@ -14,10 +14,6 @@ class Settings(private val dataView: AbstractView) {
     }
 
     var plotSize: Dimension = Dimension(1760, 870)
-        set(value) {
-            println(value)
-            field = value
-        }
 
     var title: String = ""
         set(value) {

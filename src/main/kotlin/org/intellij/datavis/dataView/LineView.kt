@@ -12,6 +12,7 @@ import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
 import org.intellij.datavis.visualization.LineChart
 import java.awt.Dimension
+import java.awt.FlowLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
@@ -47,7 +48,7 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
     // todo: if there is no double values
     override fun completeSettingsPanel() {
-        val comboBoxSize = scale(200)
+        val comboBoxSize = scale(100)
 
         addChartSettings(settings)
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
@@ -61,6 +62,26 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
         yChooser.maximumSize = Dimension(comboBoxSize, yChooser.preferredSize.height);
         yChooser.preferredSize =  Dimension(comboBoxSize, yChooser.preferredSize.height);
         yChooser.minimumSize = Dimension(comboBoxSize, yChooser.preferredSize.height);
+
+        if (xModel.size > 0) {
+            xChooser.selectedIndex = 0
+            yChooser.selectedIndex = yModel.size - 1
+        }
+
+//        val chooserPanel = JPanel(FlowLayout())
+//
+//        val xPanel = JPanel()
+//        xPanel.layout = BoxLayout(xPanel, BoxLayout.Y_AXIS)
+//        xPanel.add(JLabel("Data for X-axis:"))
+//        xPanel.add(xChooser)
+//
+//        val yPanel = JPanel()
+//        yPanel.layout = BoxLayout(yPanel, BoxLayout.Y_AXIS)
+//        yPanel.add(JLabel("Data for Y-axis:"))
+//        yPanel.add(yChooser)
+//
+//        chooserPanel.add(xPanel)
+//        chooserPanel.add(yPanel)
 
         val chooserPanel = JPanel(GridBagLayout())
         val c = GridBagConstraints()

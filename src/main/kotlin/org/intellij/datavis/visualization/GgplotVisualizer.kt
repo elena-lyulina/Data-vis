@@ -280,7 +280,6 @@ class GgplotLib  {
 
         if (!settings.xLines) {
             addComa = builder.appendWithComa(addComa, "'axis_line_x': {'name': 'blank'}")
-            builder.append("'axis_line_x': {'name': 'blank'}")
         }
 
         if (!settings.yLines) {

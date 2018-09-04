@@ -16,7 +16,7 @@ interface Visualizer {
      * Visualizing libraries aren't needed for drawing table, so it implements here
      */
     fun drawTable(dataFile: DataWrapper, plotPanel: JPanel) {
-
+        plotPanel.removeAll()
         plotPanel.layout = BoxLayout(plotPanel, BoxLayout.LINE_AXIS)
         if (dataFile.parsed) {
             val table = DataTable(dataFile.headers, dataFile.columns)

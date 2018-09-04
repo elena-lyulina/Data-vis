@@ -2,6 +2,7 @@ package org.intellij.datavis.dataView
 
 import com.intellij.util.ui.JBInsets
 import com.intellij.util.ui.JBUI
+import com.intellij.util.ui.JBUI.scale
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.ChartSettingsPanel
 import org.intellij.datavis.settings.Settings
@@ -145,12 +146,14 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
 
     // вот это вот не оч норм, там каждая вкладка перерисовывается
     fun applyResize(settings: Settings) {
-        settings.plotSize = myPlotPanel.size
+        settings.plotSize = Dimension(Math.abs(myPlotPanel.size.width - scale(10)), Math.abs(myPlotPanel.size.height - scale(10)))
         if (this@AbstractView == parentPanel.currentOpenedView) {
             println(settings.plotSize)
             parentPanel.currentOpenedView.updatePlotPanel()
         }
     }
+
+
 
 }
 

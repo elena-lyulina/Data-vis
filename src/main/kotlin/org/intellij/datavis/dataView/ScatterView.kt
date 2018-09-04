@@ -59,6 +59,11 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
         yChooser.preferredSize =  Dimension(comboBoxSize, yChooser.preferredSize.height);
         yChooser.minimumSize = Dimension(comboBoxSize, yChooser.preferredSize.height);
 
+        if (xModel.size > 0) {
+            xChooser.selectedIndex = 0
+            yChooser.selectedIndex = yModel.size - 1
+        }
+
         val chooserPanel = JPanel(GridBagLayout())
         val c = GridBagConstraints()
 
