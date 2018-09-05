@@ -42,6 +42,8 @@ abstract class AbstractView internal constructor(internal var dataFile: DataWrap
     var myViewPanel = JPanel()
     protected var mySettingsPanel = JPanel()
     protected var myPlotPanel = JPanel()
+    protected val comboBoxSize = JBUI.scale(100)
+
 
     protected val myVisFactory: VisFactory = GgplotFactory()
     protected val myVisualizer : Visualizer

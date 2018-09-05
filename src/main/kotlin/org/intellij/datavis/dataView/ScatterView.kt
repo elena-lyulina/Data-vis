@@ -43,8 +43,6 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     }
 
     override fun completeSettingsPanel() {
-        val comboBoxSize = JBUI.scale(200)
-
         addChartSettings(settings)
 
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }

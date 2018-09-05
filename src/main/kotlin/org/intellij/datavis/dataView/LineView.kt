@@ -48,8 +48,6 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
     // todo: if there is no double values
     override fun completeSettingsPanel() {
-        val comboBoxSize = scale(100)
-
         addChartSettings(settings)
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }

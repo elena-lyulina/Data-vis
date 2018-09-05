@@ -39,8 +39,6 @@ class BarView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView
      * currently settings consist only of a combobox... but it s temporary
      */
     override fun completeSettingsPanel() {
-        val comboBoxSize = JBUI.scale(200)
-
         addChartSettings(settings)
 
         file.columns.forEach { c -> valueModel.addElement(c) }
