@@ -13,18 +13,17 @@ import com.intellij.ui.ColoredListCellRenderer
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBList
 import com.intellij.ui.content.ContentFactory
-import com.intellij.ui.layout.panel
-import com.intellij.ui.tabs.TabInfo
 import org.intellij.datavis.data.DataProvider
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.ui.DataViewTabbedPanel.Companion.DATA_VIEWER_ID
-
-import javax.swing.*
-import java.awt.*
+import java.awt.BorderLayout
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.io.File
+import javax.swing.*
+import javax.swing.filechooser.FileFilter
 
 
 /**
@@ -80,11 +79,14 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
         override fun actionPerformed(e: AnActionEvent) {
             val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
                     .withFileFilter { virtualFile -> provider.supportedFileFormats.keys.contains(virtualFile.extension) }
-            val virtualFile= FileChooser.chooseFile(descriptor, myProject, null) ?: return
+            val virtualFile = FileChooser.chooseFile(descriptor, myProject, null) ?: return
 
-            provider.addData(virtualFile, provider.supportedFileFormats[virtualFile.extension])
+            provider.addData(File(virtualFile.path), provider.supportedFileFormats[virtualFile.extension])
         }
+
     }
+
+
 
     /**
      * Action to remove all variables from list

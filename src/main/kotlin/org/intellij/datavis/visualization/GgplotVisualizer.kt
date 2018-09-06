@@ -18,116 +18,24 @@ import kotlin.reflect.full.createInstance
 
 object GgplotVisualizer : Visualizer {
 
-    private val GG_LIB_NAME = "gog-awt_deploy_woj.jar"
-    private val GGPLOT_NAME = "org.intellij.datavis.visualization.GgplotLib"
-
-    private val SETTINGS_CLASS_NAME = "settings.Settings"
-
-    private var ggplotLib: Any
+    private var ggplotLib = GgplotLib()
     private lateinit var myClassLoader: URLClassLoader
 
     private val LOG = Logger.getInstance(javaClass)
 
-    init {
-        ggplotLib = loadGgplotVisualizer()
-    }
-
-
     override fun draw(chart: ChartView, panel: JPanel) {
         when (chart) {
-            is LineChart -> invokeMethod("drawLineChart", arrayOf(panel, chart.xData, chart.yData, chart.settings),
-                    arrayOf(JPanel::class.java, List::class.java, List::class.java, Settings::class.java))
-            is ScatterChart -> invokeMethod("drawScatterChart", arrayOf(panel, chart.xData, chart.yData, chart.settings),
-                    arrayOf(JPanel::class.java, List::class.java, List::class.java, Settings::class.java))
-            is BarChart -> invokeMethod("drawBarChart", arrayOf(panel, chart.data, chart.settings),
-                    arrayOf(JPanel::class.java, List::class.java, Settings::class.java))
-            else  ->  LOG.warn("Cannot draw such type of chart")
+            is LineChart -> ggplotLib.drawLineChart(panel, chart.xData, chart.yData, chart.settings)
+            is ScatterChart -> ggplotLib.drawScatterChart(panel, chart.xData, chart.yData, chart.settings)
+            is BarChart -> ggplotLib.drawBarChart(panel, chart.data, chart.settings)
 
         }
-    }
-
-    /**
-     * Ggplot lib uses apache.batik v.1.7 while plugin classloader loads apache.batik v. 1.10
-     * To avoid conflicts between them i need to use my own classloader with overridden {@link ClassLoader#getResource} method
-     * So {@link org.intellij.datavis.visualization.GgplotLib} class, that calls ggplot lib and draws charts, is loaded by it
-     */
-    private fun loadGgplotVisualizer() : Any {
-        val loader = javaClass.classLoader as UrlClassLoader
-        val urls = loader.urls.filter{ url -> url.file.contains(GG_LIB_NAME)} as MutableList
-        val clazz = loader.loadClass(GGPLOT_NAME)
-        urls.addAll(findContainingJar(clazz, loader))
-
-        myClassLoader = MyClassLoader(urls.toTypedArray(), loader)
-
-        val gg = myClassLoader.loadClass(clazz.canonicalName)!!
-        return gg.kotlin.createInstance()
-    }
-
-    class MyClassLoader(urls: Array<URL>, parent : ClassLoader): URLClassLoader(urls, parent) {
-        override fun getResources(name: String?): Enumeration<URL> {
-            return findResources(name) ?: super.getResources(name)
-        }
-
-        @Throws(ClassNotFoundException::class)
-        override fun loadClass(name: String): Class<*>? {
-            //todo: just for checking; find better solution
-            if (name.contains("Settings")) return super.loadClass(name)
-
-
-            var loadedClass = findLoadedClass(name)
-
-            loadedClass ?: try {
-                loadedClass = findClass(name)
-            } catch (e: ClassNotFoundException) {}
-
-            return loadedClass ?: super.loadClass(name)
-        }
-    }
-
-    private fun findContainingJar(clazz: Class<*>, loader: UrlClassLoader): ArrayList<URL> {
-        val resource = clazz.getResource('/' + clazz.name.replace('.', '/') + ".class") ?: return ArrayList()
-
-        val url = URLDecoder.decode(resource.toString().removePrefix("jar:file:"), "UTF-8")
-        val idx = url.indexOf(".jar!")
-        if (idx == -1) return ArrayList()
-
-        return loader.urls.filter{ u -> u.file.contains(url.substring(0, idx + 4)) } as ArrayList<URL>
-    }
-
-
-    @Throws(FileNotFoundException::class)
-    private fun verifyValidPath(url: URL) {
-        val filePath = File(url.file)
-        if (!filePath.exists()) {
-            throw FileNotFoundException(filePath.path)
-        }
-    }
-
-
-    /**
-     *
-     */
-    private fun invokeMethod(name: String, args: Array<*>, classes: Array<Class<*>>) {
-        assert(args.size == classes.size)
-        for (i in 0 until classes.size)
-            assert(classes[i].isInstance(args[i]))
-
-        val method = ggplotLib.javaClass.getMethod(name, *classes)
-        method.invoke(ggplotLib, *args)
     }
 
 }
 
 
-
-
 class GgplotLib  {
-    //todo: change chart size according to window size!
-    private val VIEW_SIZE = DoubleVector(1500.0, 1000.0)
-
-    init {
-        println(javaClass.classLoader)
-    }
 
     fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
         panel.removeAll()

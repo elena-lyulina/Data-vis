@@ -3,6 +3,7 @@ package org.intellij.datavis.data
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import java.io.File
 import javax.swing.*
 
 /**
@@ -64,11 +65,11 @@ class DataProvider private constructor() {
      * To add data representing as virtual file
      * Its hashcode is used as data id
      * Its name will be shown on data variables panel
-     * @param file Virtual file loaded by user
+     * @param file file loaded by user
      * @param separator
      */
     @Throws(UnsupportedOperationException::class, AddingExistentElementException::class)
-    public fun addData(file: VirtualFile, separator: Char?) : DataWrapper {
+    public fun addData(file: File, separator: Char?) : DataWrapper {
         if (supportedFileFormats.containsValue(separator)) {
             val id = file.hashCode().toString()
             val wrapper = DataWrapper(id, file, separator!!)

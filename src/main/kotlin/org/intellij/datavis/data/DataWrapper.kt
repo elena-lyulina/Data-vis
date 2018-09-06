@@ -23,15 +23,12 @@ class DataWrapper (val ID: String, data: String, val name: String = "Name", val 
     lateinit var headers: MutableList<String>
     lateinit var columns: MutableList<Column>
     var parsed: Boolean = false
-    var virtualFile: VirtualFile? = null
 
     init {
         parsed = parseCSV(StringReader(data))
     }
 
-    constructor (id: String, file: VirtualFile, separator: Char) : this(id, String(file.contentsToByteArray()), file.name, separator) {
-        virtualFile = file
-    }
+    constructor (id: String, file: File, separator: Char) : this(id, String(file.readBytes()), file.name, separator)
 
 
     private fun parseCSV(file: VirtualFile) : Boolean {

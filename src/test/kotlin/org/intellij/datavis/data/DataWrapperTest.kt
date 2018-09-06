@@ -87,7 +87,7 @@ class DataWrapperTest {
         val classLoader = javaClass.classLoader
         val file = File(classLoader.getResource(path)!!.file)
         val data = String(file.readBytes())
-        return DataWrapper(data, separator = separator)
+        return DataWrapper("id", data, "name", separator = separator)
     }
 
 

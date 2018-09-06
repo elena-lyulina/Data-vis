@@ -45,7 +45,7 @@ dependencies {
     compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
     // compile files("lib/gog-awt_deploy-src_WO_j_b.jar", "lib/gog-awt_deploy_WO_j_b.jar")
     // libraries with org.apache.batik:
-    compile files("lib/gog-awt_deploy_woj.jar")
+    compile files("lib/gog-awt_shadowed.jar")
     testCompile (group: 'junit', name: 'junit', version: '4.12') {
         //exclude group: 'org.hamcrest', module:'hamcrest-core'
 
