@@ -1,14 +1,13 @@
 package org.intellij.datavis.visualization
 
 import org.intellij.datavis.data.DataWrapper
-import org.intellij.datavis.settings.Settings
 import javax.swing.*
 import javax.swing.JTable
 
 
 interface Visualizer {
 
-    fun draw(chart: ChartView, panel: JPanel)
+    fun draw(chart: Chart, panel: JPanel)
 
 
     //todo: distinguish tableView and chartView?

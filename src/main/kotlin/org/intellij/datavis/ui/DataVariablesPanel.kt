@@ -77,9 +77,11 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
     private inner class LoadDataAction internal constructor() : AnAction("Load data", "Load data", AllIcons.Actions.Download) {
 
         override fun actionPerformed(e: AnActionEvent) {
+            dataVarList.clearSelection()
+
             val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
                     .withFileFilter { virtualFile -> provider.supportedFileFormats.keys.contains(virtualFile.extension) }
-            val virtualFile = FileChooser.chooseFile(descriptor, myProject, null) ?: return
+            val virtualFile = FileChooser.chooseFile(descriptor, myProject, myProject.baseDir) ?: return
 
             provider.addData(File(virtualFile.path), provider.supportedFileFormats[virtualFile.extension])
         }

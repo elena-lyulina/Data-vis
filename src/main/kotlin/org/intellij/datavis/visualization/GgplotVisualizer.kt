@@ -1,20 +1,13 @@
 package org.intellij.datavis.visualization
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.util.lang.UrlClassLoader
 import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest
 import org.intellij.datavis.settings.Settings
 import java.awt.Color
-import java.io.File
-import java.io.FileNotFoundException
-import java.net.URL
 import java.net.URLClassLoader
-import java.net.URLDecoder
 import java.util.*
 import javax.swing.JPanel
-import kotlin.collections.ArrayList
-import kotlin.reflect.full.createInstance
 
 object GgplotVisualizer : Visualizer {
 
@@ -23,7 +16,7 @@ object GgplotVisualizer : Visualizer {
 
     private val LOG = Logger.getInstance(javaClass)
 
-    override fun draw(chart: ChartView, panel: JPanel) {
+    override fun draw(chart: Chart, panel: JPanel) {
         when (chart) {
             is LineChart -> ggplotLib.drawLineChart(panel, chart.xData, chart.yData, chart.settings)
             is ScatterChart -> ggplotLib.drawScatterChart(panel, chart.xData, chart.yData, chart.settings)

@@ -6,7 +6,7 @@ import java.awt.Dimension
 
 
 //data class?
-class Settings(private val dataView: AbstractView) {
+data class Settings(private val dataView: AbstractView) : Cloneable {
 
     init {
         println("settings")

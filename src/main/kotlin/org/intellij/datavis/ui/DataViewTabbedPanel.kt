@@ -14,7 +14,7 @@ import com.intellij.ui.tabs.impl.JBEditorTabs
 import javax.swing.JPanel
 
 
-class DataViewTabbedPanel(myProject: Project) {
+class DataViewTabbedPanel(val myProject: Project) {
 
     private var myTabs: JBEditorTabs = JBEditorTabs(myProject, ActionManager.getInstance(), IdeFocusManager.findInstance(), myProject)
 

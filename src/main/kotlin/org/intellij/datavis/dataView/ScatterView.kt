@@ -10,13 +10,15 @@ import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
+import org.intellij.datavis.visualization.Chart
+import org.intellij.datavis.visualization.LineChart
 import org.intellij.datavis.visualization.ScatterChart
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
-class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractChartView(file, parentPanel) {
 
     companion object {
         private val LOG = Logger.getInstance(ScatterView::class.java)
@@ -34,7 +36,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     private val yModel = DefaultComboBoxModel<Column>()
     private val yChooser = ComboBox<Column>(yModel)
 
-    var settings = Settings(this)
+    override val settings = Settings(this)
 
     init {
         myPlotPanel.addComponentListener(PanelResizeListener(settings))
@@ -43,7 +45,7 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     }
 
     override fun completeSettingsPanel() {
-        addChartSettings(settings)
+        addChartSettings()
 
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }
@@ -94,22 +96,15 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
         myViewPanel.repaint()
     }
 
-    override fun updatePlotPanel() {
-        if (xModel.size > 0 && yModel.size > 0) {
-            LOG.info("Scatter chart is drawing")
+    override fun createChart(settings: Settings): Chart? {
+        return if(xModel.size > 0 && yModel.size > 0) {
+            LOG.info("Line chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
 
-            val chart = ScatterChart(xData, yData, settings)
-            myVisualizer.draw(chart, myPlotPanel)
-
-            myViewPanel.repaint()
-            parentPanel.update()
-
+            ScatterChart(xData, yData, settings)
         }
-        else {
-            LOG.info("No available data for scatter chart")
-        }
+        else null
     }
 
 }

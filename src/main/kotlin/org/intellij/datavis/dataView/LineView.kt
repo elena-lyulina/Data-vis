@@ -5,20 +5,19 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.JBInsets
-import com.intellij.util.ui.JBUI.scale
 import org.intellij.datavis.data.Column
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
+import org.intellij.datavis.visualization.Chart
 import org.intellij.datavis.visualization.LineChart
 import java.awt.Dimension
-import java.awt.FlowLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.*
 
 
-class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractView(file, parentPanel) {
+class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractChartView(file, parentPanel) {
 
     companion object {
         private val LOG = Logger.getInstance(LineView::class.java)
@@ -36,7 +35,7 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
     private val yModel = DefaultComboBoxModel<Column>()
     private val yChooser = ComboBox<Column>(yModel)
 
-    var settings = Settings(this)
+    override val settings = Settings(this)
 
 
     init {
@@ -48,7 +47,7 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
 
     // todo: if there is no double values
     override fun completeSettingsPanel() {
-        addChartSettings(settings)
+        addChartSettings()
         file.columns.forEach { c -> if (c.canBeCastedToDouble) { xModel.addElement(c); yModel.addElement(c) } }
         xChooser.addActionListener { updatePlotPanel() }
         yChooser.addActionListener { updatePlotPanel() }
@@ -114,21 +113,17 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVie
         myViewPanel.repaint()
     }
 
-    override fun updatePlotPanel() {
-        if(xModel.size > 0 && yModel.size > 0) {
+    override fun createChart(settings: Settings): Chart? {
+        return if(xModel.size > 0 && yModel.size > 0) {
             LOG.info("Line chart is drawing")
             val xData = xModel.getElementAt(xChooser.selectedIndex).doubleValues
             val yData = yModel.getElementAt(yChooser.selectedIndex).doubleValues
 
-            val chart = LineChart(xData, yData, settings)
-            myVisualizer.draw(chart, myPlotPanel)
-
-            myViewPanel.repaint()
-            parentPanel.update()
+            LineChart(xData, yData, settings)
         }
-        else {
-            LOG.info("No available data for line chart ")
-        }
+        else null
     }
+
+
 
 }
