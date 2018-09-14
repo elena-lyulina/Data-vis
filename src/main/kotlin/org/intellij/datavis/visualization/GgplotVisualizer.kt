@@ -8,6 +8,7 @@ import java.awt.Color
 import java.net.URLClassLoader
 import java.util.*
 import javax.swing.JPanel
+import kotlin.collections.HashMap
 
 object GgplotVisualizer : Visualizer {
 
@@ -16,12 +17,15 @@ object GgplotVisualizer : Visualizer {
 
     private val LOG = Logger.getInstance(javaClass)
 
-    override fun draw(chart: Chart, panel: JPanel) {
+    override fun draw(chart: Chart, panel: JPanel) : Map<String, Any> {
         when (chart) {
-            is LineChart -> ggplotLib.drawLineChart(panel, chart.xData, chart.yData, chart.settings)
-            is ScatterChart -> ggplotLib.drawScatterChart(panel, chart.xData, chart.yData, chart.settings)
-            is BarChart -> ggplotLib.drawBarChart(panel, chart.data, chart.settings)
-
+            is LineChart -> return ggplotLib.drawLineChart(panel, chart.xData, chart.yData, chart.settings)
+            is ScatterChart -> return ggplotLib.drawScatterChart(panel, chart.xData, chart.yData, chart.settings)
+            is BarChart -> return ggplotLib.drawBarChart(panel, chart.data, chart.settings)
+            else -> {
+                LOG.warn("Such chart id doesn't support")
+                return HashMap()
+            }
         }
     }
 
@@ -30,22 +34,25 @@ object GgplotVisualizer : Visualizer {
 
 class GgplotLib  {
 
-    fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
+    fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
-        val plotSpecList = Arrays.asList<Map<String, Any>>(basicLineChart(xData, yData, settings))
-        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
+        val plotSpec = basicLineChart(xData, yData, settings)
+        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
+        return plotSpec
     }
 
-    fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) {
+    fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
-        val plotSpecList = Arrays.asList<Map<String, Any>>(basicScatterChart(xData, yData, settings))
-        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
+        val plotSpec = basicScatterChart(xData, yData, settings)
+        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
+        return plotSpec
     }
 
-    fun drawBarChart(panel: JPanel, data: List<*>, settings: Settings) {
+    fun drawBarChart(panel: JPanel, data: List<*>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
-        val plotSpecList = Arrays.asList<Map<String, Any>>(basicBarChart(data, settings))
-        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpecList, panel)
+        val plotSpec = basicBarChart(data, settings)
+        SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
+        return plotSpec
     }
 
     private val xRepl = "x"

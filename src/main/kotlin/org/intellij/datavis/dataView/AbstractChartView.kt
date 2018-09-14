@@ -101,9 +101,11 @@ abstract class AbstractChartView(dataFile: DataWrapper, parentPanel: DataViewPan
     }
 
 
-    fun drawChart(chart: Chart?, panel: JPanel) {
-        if(chart != null) {
+    fun drawChart(chart: Chart?, panel: JPanel) : Map<String, Any> {
+        return if (chart != null) {
             myVisualizer.draw(chart, panel)
+        } else {
+            HashMap()
         }
     }
 }

@@ -1,12 +1,13 @@
 package org.intellij.datavis.settings
 
+import com.intellij.configurationStore.exportSettings
 import org.intellij.datavis.dataView.AbstractView
 import java.awt.Color
 import java.awt.Dimension
 
 
-//data class?
-data class Settings(private val dataView: AbstractView) : Cloneable {
+
+class Settings(private val dataView: AbstractView) {
 
     init {
         println("settings")

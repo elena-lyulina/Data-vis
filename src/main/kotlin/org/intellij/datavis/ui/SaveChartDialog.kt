@@ -5,17 +5,21 @@ import com.intellij.openapi.fileChooser.FileSaverDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import org.intellij.datavis.dataView.AbstractChartView
+import org.intellij.datavis.visualization.SwingDemoUtil
 import java.awt.AWTException
+import java.awt.Dimension
 import java.awt.Robot
 import java.awt.image.BufferedImage
 import java.io.File
+import java.io.IOException
 import javax.imageio.ImageIO
 import javax.swing.JComponent
+import javax.swing.JPanel
 
 
 class SaveChartDialog(val project: Project, private val chartView: AbstractChartView) : DialogWrapper(project, false) {
     private val form = SaveChartPanel(chartView.settings.plotSize.width, chartView.settings.plotSize.height)
-    private val extension = "jpeg"
+    private val extension = "png"
 
     init {
         isModal = true
@@ -30,56 +34,43 @@ class SaveChartDialog(val project: Project, private val chartView: AbstractChart
 
     fun saveChart() {
         val descriptor = FileSaverDescriptor("Save chart", "To save chart as $extension", extension)
-        val wrapper = FileChooserFactory.getInstance().createSaveFileDialog(descriptor, project).save(project.baseDir, "chart.$extension")
+        val wrapper = FileChooserFactory.getInstance().createSaveFileDialog(descriptor, project).save(null, "chart.$extension")
         if (wrapper != null) {
-//            val size = Dimension(form.width, form.height)
-//
-//            val panel = JPanel()
-//            panel.size = size
-//            panel.preferredSize = size
-//            panel.maximumSize = size
-//            panel.minimumSize = size
-//
-//            val settings = chartView.settings.copy()
-//            settings.plotSize = size
-//
-//            println(chartView.settings.plotSize)
-//            println(settings.plotSize)
-//
-//            val chart = chartView.createChart(settings)
-//            chartView.drawChart(chart, panel)
-//           // panel.components
-//
-//            val image = UIUtil.createImage(panel.width, panel.height, BufferedImage.TYPE_INT_ARGB)
-//            val g = image.graphics
-//            //panel.paint(g)
-//            try {
-//                ImageIO.write(image, "png", File(wrapper.file.path))
-//            } catch (ex: IOException) {
-//            }
+            val size = Dimension(form.width, form.height)
 
+            val panel = JPanel()
+            val chart = chartView.createChart(chartView.settings)
+            val plotSpec = chartView.drawChart(chart, panel)
+            val image = SwingDemoUtil.getImageFromPlotSpec(plotSpec, size.width, size.height)
 
-            val panel = chartView.myPlotPanel
-            panel.isVisible = true
-            panel.doLayout()
-
-            var image: BufferedImage? = null
-            try {
-                image = Robot().createScreenCapture(panel.bounds())
-            } catch (e1: AWTException) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace()
-            }
-
-            val graphics2D = image!!.createGraphics()
-            panel.paint(graphics2D)
             try {
                 ImageIO.write(image, extension, File(wrapper.file.path))
-            } catch (e: Exception) {
-                // TODO Auto-generated catch block
-                println("error")
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
 
+
+//            val panel = chartView.myPlotPanel
+//            panel.isVisible = true
+//            panel.doLayout()
+//
+//            var image: BufferedImage? = null
+//            try {
+//                image = Robot().createScreenCapture(panel.bounds())
+//            } catch (e1: AWTException) {
+//                // TODO Auto-generated catch block
+//                e1.printStackTrace()
+//            }
+//
+//            val graphics2D = image!!.createGraphics()
+//            panel.paint(graphics2D)
+//            try {
+//                ImageIO.write(image, extension, File(wrapper.file.path))
+//            } catch (e: Exception) {
+//                // TODO Auto-generated catch block
+//                println("error")
+//            }
+//
         }
 
     }

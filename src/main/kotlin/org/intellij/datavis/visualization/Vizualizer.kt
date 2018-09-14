@@ -7,7 +7,7 @@ import javax.swing.JTable
 
 interface Visualizer {
 
-    fun draw(chart: Chart, panel: JPanel)
+    fun draw(chart: Chart, panel: JPanel) : Map<String, Any>
 
 
     //todo: distinguish tableView and chartView?

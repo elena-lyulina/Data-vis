@@ -59,11 +59,9 @@ class DataWrapper (val ID: String, data: String, val name: String = "Name", val 
                     columns.add(Column(headers[i]))
                 }
 
-                var i = 0
 
                 record = csvReader.readNext()
                 while (record != null) {
-                    println(i++)
                     if (parseLine(record)) record = csvReader.readNext() else return false
                 }
             }

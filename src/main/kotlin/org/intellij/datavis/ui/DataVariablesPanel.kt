@@ -81,7 +81,7 @@ class DataVariablesPanel(private val myProject: Project) : JPanel(BorderLayout()
 
             val descriptor = FileChooserDescriptor(true, false, false, false, false, false)
                     .withFileFilter { virtualFile -> provider.supportedFileFormats.keys.contains(virtualFile.extension) }
-            val virtualFile = FileChooser.chooseFile(descriptor, myProject, myProject.baseDir) ?: return
+            val virtualFile = FileChooser.chooseFile(descriptor, myProject, null) ?: return
 
             provider.addData(File(virtualFile.path), provider.supportedFileFormats[virtualFile.extension])
         }
