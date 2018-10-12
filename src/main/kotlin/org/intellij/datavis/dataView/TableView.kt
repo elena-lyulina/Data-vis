@@ -15,6 +15,8 @@ class TableView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractVi
     override val hasSettings: Boolean = false
 
     init {
+        println(Thread.currentThread())
+
         updatePlotPanel()
         completeSettingsPanel()
     }

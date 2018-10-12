@@ -39,6 +39,8 @@ class LineView(val file: DataWrapper, parentPanel : DataViewPanel) : AbstractCha
 
 
     init {
+        println(Thread.currentThread())
+
         myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()

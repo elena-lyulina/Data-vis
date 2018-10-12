@@ -2,12 +2,15 @@ package org.intellij.datavis.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.util.ui.JBUI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.dataView.*
+import org.intellij.datavis.extensions.Parent
 import org.intellij.datavis.settings.Settings
+import org.intellij.datavis.visualization.Visualizer
 import java.awt.*
 import java.awt.GridBagConstraints.*
 import java.awt.event.ActionEvent
@@ -24,30 +27,34 @@ import javax.swing.Timer
 class DataViewPanel(myData: DataWrapper, private val tabbedPanel: DataViewTabbedPanel) : JPanel() {
 
     private val dataViewCardPanel: JPanel = JPanel(CardLayout())
-    private var dataViewKinds: List<AbstractView> = arrayListOf(TableView(myData, this), BarView(myData, this), ScatterView(myData, this), LineView(myData, this))
+    private lateinit var dataViewKinds: List<AbstractView>
     internal var currentOpenedView: AbstractView
 
     private val settingsAction = SettingsAction()
     private val saveChartAction = SaveChartAction()
 
     init {
+
+
+
 // todo: extension point for abstract view
-//        runBlocking {
-//
-//            val table =  async { TableView(myData, this@DataViewPanel) }
-//            val bar =  async { BarView(myData, this@DataViewPanel) }
-//            val scatter = async { ScatterView(myData, this@DataViewPanel) }
-//            val line = async { LineView(myData, this@DataViewPanel) }
-//
-//            dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
-//
-//        }
+        runBlocking {
+
+            val table =  async { TableView(myData, this@DataViewPanel) }
+            val bar =  async { BarView(myData, this@DataViewPanel) }
+            val scatter = async { ScatterView(myData, this@DataViewPanel) }
+            val line = async { LineView(myData, this@DataViewPanel) }
+
+            dataViewKinds = mutableListOf(table.await(), bar.await(), scatter.await(), line.await())
+
+        }
         dataViewKinds.forEach { view -> dataViewCardPanel.add(view.DATA_VIEW_ID, view.myViewPanel) }
         currentOpenedView = dataViewKinds[0]
 
         layout = BorderLayout()
         val toolbar = createToolbar().component
         add(toolbar, BorderLayout.NORTH)
+
         add(dataViewCardPanel, BorderLayout.CENTER)
     }
 

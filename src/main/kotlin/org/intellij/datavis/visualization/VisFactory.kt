@@ -13,9 +13,9 @@ interface VisFactory {
 /**
  * Currently unused
  */
-class Data2visFactory : VisFactory {
+class Data2vizFactory : VisFactory {
     override fun createVisualizer() : Visualizer {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Data2VizVisualizer
     }
 
 }

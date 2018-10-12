@@ -1,78 +1,39 @@
 package org.intellij.datavis.settings
 
-import com.intellij.configurationStore.exportSettings
 import org.intellij.datavis.dataView.AbstractView
+import org.intellij.datavis.visualization.GgplotVisualizer
+import org.intellij.datavis.visualization.Visualizer
 import java.awt.Color
 import java.awt.Dimension
 
 
-
-class Settings(private val dataView: AbstractView) {
-
-    init {
-        println("settings")
-        println(javaClass.classLoader)
-    }
+open class Settings(private val dataView: AbstractView) : Cloneable {
 
     var plotSize: Dimension = Dimension(1760, 870)
 
     var title: String = ""
-        set(value) {
-            field = value
-            dataView.updatePlotPanel()
-        }
 
-    var chartColor : Color = Color(98, 150, 85)
-        set(value) {
-            field = value
-            dataView.updatePlotPanel()
-        }
+    var chartColor : Color = Color(107, 136, 150)
 
     var xTitle: String = ""
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
     var xLabels: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
     var xTicks: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
     var xLines: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
 
 
     var yTitle: String = ""
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
     var yLabels: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
     var yTicks: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
-
     var yLines: Boolean = true
-        set(value) {
-            field = value;
-            dataView.updatePlotPanel()
-        }
+
+    var visualizer: Visualizer = GgplotVisualizer
+
+    fun updateView() {
+        dataView.updatePlotPanel()
+    }
 
 
+    public override fun clone() : Any = super.clone()
 
     //change it
     val gettersAxisTable = mutableListOf<MutableList<() -> Any>>(

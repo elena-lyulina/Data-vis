@@ -1,5 +1,6 @@
 package org.intellij.datavis.dataView
 
+import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.util.ui.JBInsets
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.JBUI.scale
@@ -7,6 +8,7 @@ import org.intellij.datavis.data.DataWrapper
 import org.intellij.datavis.settings.ChartSettingsPanel
 import org.intellij.datavis.settings.Settings
 import org.intellij.datavis.ui.DataViewPanel
+import org.intellij.datavis.visualization.Data2vizFactory
 import org.intellij.datavis.visualization.GgplotFactory
 import org.intellij.datavis.visualization.VisFactory
 import org.intellij.datavis.visualization.Visualizer
@@ -37,15 +39,21 @@ internal interface View {
  */
 abstract class AbstractView internal constructor(internal var dataFile: DataWrapper, val parentPanel: DataViewPanel) : View {
 
+    object ExtensionPoint {
+        @JvmStatic
+        val name : ExtensionPointName<AbstractView> = ExtensionPointName.create("org.intellij.datavis.abstractview")
+    }
+
+
     var myViewPanel = JPanel()
     protected var mySettingsPanel = JPanel()
     public var myPlotPanel = JPanel()
     protected val comboBoxSize = JBUI.scale(100)
 
 
-    private val myVisFactory: VisFactory = GgplotFactory()
+    //todo: make it up-to-date with settings.visualizer or remove
+    private val myVisFactory: VisFactory = Data2vizFactory()
     protected val myVisualizer : Visualizer
-    // todo: add button to change library?
 
 
     init {

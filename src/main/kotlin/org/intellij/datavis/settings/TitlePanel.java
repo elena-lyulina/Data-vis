@@ -20,6 +20,7 @@ public class TitlePanel implements SettingsOption {
             public void keyPressed(KeyEvent keyEvent) {
                 if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
                     settings.setTitle(titleField.getText());
+                    settings.updateView();
                 }
             }
         });

@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 import java.awt.event.ComponentEvent
 import java.awt.event.ComponentListener
+import java.awt.image.BufferedImage
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.JPanel
@@ -87,7 +88,6 @@ abstract class AbstractChartView(dataFile: DataWrapper, parentPanel: DataViewPan
     fun applyResize(settings: Settings) {
         settings.plotSize = Dimension(Math.abs(myPlotPanel.size.width - JBUI.scale(10)), Math.abs(myPlotPanel.size.height - JBUI.scale(10)))
         if (this@AbstractChartView == parentPanel.currentOpenedView) {
-            println(settings.plotSize)
             parentPanel.currentOpenedView.updatePlotPanel()
         }
     }
@@ -95,17 +95,19 @@ abstract class AbstractChartView(dataFile: DataWrapper, parentPanel: DataViewPan
     override fun updatePlotPanel() {
         val chart = createChart(settings)
         drawChart(chart, myPlotPanel)
+        myPlotPanel.repaint()
         myViewPanel.repaint()
         parentPanel.update()
-
     }
 
 
-    fun drawChart(chart: Chart?, panel: JPanel) : Map<String, Any> {
-        return if (chart != null) {
-            myVisualizer.draw(chart, panel)
-        } else {
-            HashMap()
+    fun drawChart(chart: Chart?, panel: JPanel) {
+        if (chart != null) {
+            settings.visualizer.draw(chart, panel)
         }
+    }
+
+    fun getImage(chart: Chart?) : BufferedImage? {
+        return settings.visualizer.getImage(chart)
     }
 }

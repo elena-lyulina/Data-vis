@@ -3,6 +3,7 @@ package org.intellij.datavis.settings;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.JBDimension;
+import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -50,6 +51,13 @@ public class AxisPanel implements SettingsOption {
         return panel;
     }
 
+//    class TableCell {
+//        Object value;
+//        void setValue(value) {
+//            this.value = value;
+//        }
+//    }
+
     class MyTableModel extends AbstractTableModel {
         private String[] columnNames = {"Properties", "x", "y"};
 
@@ -87,6 +95,7 @@ public class AxisPanel implements SettingsOption {
 
         public void setValueAt(Object value, int row, int col) {
             settings.getSettersAxisTable().get(row).get(col).invoke(value);
+            settings.updateView();
            // data[row][col] = value;
            // fireTableCellUpdated(row, col);
         }

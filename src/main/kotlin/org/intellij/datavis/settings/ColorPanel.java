@@ -44,6 +44,7 @@ public class ColorPanel implements SettingsOption {
             if (color != null) {
                 colorSample.setBackground(color);
                 settings.setChartColor(color);
+                settings.updateView();
             }
         }
     }

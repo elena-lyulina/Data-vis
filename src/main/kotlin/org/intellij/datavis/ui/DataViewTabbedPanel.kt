@@ -4,6 +4,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.ToolWindow
@@ -11,6 +12,8 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.tabs.TabInfo
 import com.intellij.ui.tabs.impl.JBEditorTabs
+import org.intellij.datavis.extensions.Parent
+import java.security.cert.Extension
 import javax.swing.JPanel
 
 
@@ -23,6 +26,8 @@ class DataViewTabbedPanel(val myProject: Project) {
     }
 
     internal fun init(toolWindow: ToolWindow) {
+
+
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(myTabs, "", false)
         content.isCloseable = true

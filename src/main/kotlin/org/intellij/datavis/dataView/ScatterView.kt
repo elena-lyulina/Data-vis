@@ -39,6 +39,8 @@ class ScatterView(val file: DataWrapper, parentPanel : DataViewPanel) : Abstract
     override val settings = Settings(this)
 
     init {
+        println(Thread.currentThread())
+
         myPlotPanel.addComponentListener(PanelResizeListener(settings))
         completeSettingsPanel()
         updatePlotPanel()

@@ -14,6 +14,11 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
+    <extensionPoints>
+        <extensionPoint qualifiedName="org.intellij.datavis.visualizer" interface="org.intellij.datavis.visualization.Visualizer"/>
+        <extensionPoint qualifiedName="org.intellij.datavis.abstractview" interface="org.intellij.datavis.dataView.AbstractView"/>
+    </extensionPoints>
+
     <extensions defaultExtensionNs="com.intellij">
 
         <toolWindow id="Data Variables" secondary="true" anchor="bottom"
@@ -24,17 +29,29 @@
         <projectService serviceInterface="org.intellij.datavis.ui.DataViewTabbedPanel" serviceImplementation="org.intellij.datavis.ui.DataViewTabbedPanel"/>
         <projectService serviceInterface="org.intellij.datavis.data.DataProvider" serviceImplementation="org.intellij.datavis.data.DataProvider"/>
 
-   </extensions>
+
+    </extensions>
+    <extensions defaultExtensionNs="org.intellij.datavis">
+        <visualizer implementation="org.intellij.datavis.visualization.GgplotVisualizer"/>
+        <visualizer implementation="org.intellij.datavis.visualization.Data2VizVisualizer"/>
+
+        <abstractview implementation="org.intellij.datavis.dataView.TableView"/>
+        <abstractview implementation="org.intellij.datavis.dataView.BarView"/>
+        <abstractview implementation="org.intellij.datavis.dataView.ScatterView"/>
+        <abstractview implementation="org.intellij.datavis.dataView.LineView"/>
+
+    </extensions>
+
 
     <actions>
 
         <!--<action id="PyDebugger.ViewArray" class="com.jetbrains.python.debugger.containerview.PyViewNumericContainerAction" text="View as Array">-->
-            <!--<add-to-group group-id="XDebugger.ValueGroup" anchor="after" relative-to-action="Debugger.AddToWatch"/>-->
+        <!--<add-to-group group-id="XDebugger.ValueGroup" anchor="after" relative-to-action="Debugger.AddToWatch"/>-->
         <!--</action>-->
 
         <!-- Add your actions here -->
         <!--<action id="panel.AR_Action" class="panel.AR_Action" text="AR">-->
-            <!--<add-to-group group-id="FileMenu" anchor="first"/>-->
+        <!--<add-to-group group-id="FileMenu" anchor="first"/>-->
         <!--</action>-->
     </actions>
 </idea-plugin>

@@ -1,9 +1,11 @@
 package org.intellij.datavis.settings
 
+import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBList
 import com.intellij.util.ui.JBInsets
 import com.intellij.util.ui.JBUI
+import org.intellij.datavis.dataView.AbstractView
 import java.awt.BorderLayout
 import java.awt.CardLayout
 import java.awt.Font
@@ -17,7 +19,8 @@ interface SettingsOption {
 }
 
 class ChartSettingsPanel(val settings: Settings) : JPanel() {
-    private val settingsOptions = arrayOf(AxisPanel(settings), TitlePanel(settings), ColorPanel(settings), LegendPanel(settings))
+
+    private val settingsOptions = arrayOf(AxisPanel(settings), TitlePanel(settings), ColorPanel(settings), LegendPanel(settings), LibPanel(settings))
     private val listPanel = JPanel()
     private val cardPanel = JPanel(CardLayout())
     private val optionListModel: DefaultListModel<SettingsOption> = DefaultListModel()

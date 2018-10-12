@@ -5,58 +5,63 @@ import jetbrains.datalore.base.geometry.DoubleVector
 import jetbrains.datalore.visualization.gog.DemoAndTest
 import org.intellij.datavis.settings.Settings
 import java.awt.Color
+import java.awt.image.BufferedImage
 import java.net.URLClassLoader
 import java.util.*
 import javax.swing.JPanel
 import kotlin.collections.HashMap
 
 object GgplotVisualizer : Visualizer {
-
-    private var ggplotLib = GgplotLib()
-    private lateinit var myClassLoader: URLClassLoader
+    override val VIS_ID: String
+        get() = "Ggplot"
 
     private val LOG = Logger.getInstance(javaClass)
 
-    override fun draw(chart: Chart, panel: JPanel) : Map<String, Any> {
-        when (chart) {
-            is LineChart -> return ggplotLib.drawLineChart(panel, chart.xData, chart.yData, chart.settings)
-            is ScatterChart -> return ggplotLib.drawScatterChart(panel, chart.xData, chart.yData, chart.settings)
-            is BarChart -> return ggplotLib.drawBarChart(panel, chart.data, chart.settings)
+    @Synchronized override fun draw(chart: Chart, panel: JPanel) {
+        drawAndGetMap(chart, panel)
+    }
+
+    private fun drawAndGetMap(chart: Chart, panel: JPanel) : Map<String, Any> {
+        return when (chart) {
+            is LineChart -> drawLineChart(panel, chart.xData, chart.yData, chart.settings)
+            is ScatterChart -> drawScatterChart(panel, chart.xData, chart.yData, chart.settings)
+            is BarChart -> drawBarChart(panel, chart.data, chart.settings)
             else -> {
                 LOG.warn("Such chart id doesn't support")
-                return HashMap()
+                HashMap()
             }
         }
     }
 
-}
+
+    override fun getImage(chart: Chart?): BufferedImage? {
+        return chart?.let {SwingDemoUtil.getImageFromPlotSpec(drawAndGetMap(chart, JPanel()), chart.settings.plotSize.width, chart.settings.plotSize.height)}
+    }
 
 
-class GgplotLib  {
-
-    fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
+    private fun drawLineChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
         val plotSpec = basicLineChart(xData, yData, settings)
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
         return plotSpec
     }
 
-    fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
+    private fun drawScatterChart(panel: JPanel, xData: List<Double>, yData: List<Double>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
         val plotSpec = basicScatterChart(xData, yData, settings)
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
         return plotSpec
     }
 
-    fun drawBarChart(panel: JPanel, data: List<*>, settings: Settings) : Map<String, Any> {
+    private fun drawBarChart(panel: JPanel, data: List<*>, settings: Settings) : Map<String, Any> {
         panel.removeAll()
         val plotSpec = basicBarChart(data, settings)
         SwingDemoUtil.show(DoubleVector(settings.plotSize.getWidth(), settings.plotSize.getHeight()), plotSpec, panel)
         return plotSpec
     }
 
-    private val xRepl = "x"
-    private val yRepl = "y"
+    private const val xRepl = "x"
+    private const val yRepl = "y"
 
     private fun notEmptyTitle(xTitle: String, replacement: String) : String {
         return if(xTitle.isBlank()) replacement else xTitle
@@ -109,7 +114,7 @@ class GgplotLib  {
                     "     'geom':  {                    " +
                     "         'name': 'point',          " +
                     "         'colour': '" + color + "'," +
-                    "         'size': 5                 " +
+                    "         'size': 4                 " +
                     "               }                   " +
                     "  }                                "
 
@@ -149,7 +154,7 @@ class GgplotLib  {
     }
 
 
-   fun StringBuilder.appendWithComa(isFirstLine: Boolean, toAppend: String) : Boolean {
+   private fun StringBuilder.appendWithComa(isFirstLine: Boolean, toAppend: String) : Boolean {
         if(!isFirstLine) {
             this.append(", ")
         }
